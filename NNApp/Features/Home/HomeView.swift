@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @Environment(ProgressStore.self) private var progressStore
     @State private var showCredits = false
+    @State private var showRecommendPrompt = false
     @State private var currentFunFactIndex = Int.random(in: 0..<funFacts.count)
     let homeSelectionCount: Int
 
@@ -270,6 +271,23 @@ struct HomeView: View {
             .background(AppBackground())
             .toolbarBackground(AppTheme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showRecommendPrompt = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.up.circle.fill")
+                            .font(.system(size: 20))
+                            .foregroundStyle(AppTheme.accent)
+                    }
+                    .accessibilityLabel("Recommend app")
+                }
+            }
+            .alert("Recommend NueLearnND", isPresented: $showRecommendPrompt) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Like the app? Recommend it to a friend.")
+            }
         }
         .onChange(of: homeSelectionCount) { _, _ in
             withAnimation(.easeInOut(duration: 0.25)) {

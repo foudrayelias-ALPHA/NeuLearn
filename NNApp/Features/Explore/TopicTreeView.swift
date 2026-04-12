@@ -12,6 +12,11 @@ struct TopicTreeView: View {
     @State private var expandedIDs: Set<UUID> = []
     @State private var selectedNode: TopicTreeNode?
 
+    init(root: TopicTreeNode) {
+        self.root = root
+        _expandedIDs = State(initialValue: [root.id])
+    }
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             TreeBranch(
