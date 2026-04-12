@@ -38,6 +38,14 @@ struct CreditsView: View {
                                 .overlay(AppTheme.mutedInk.opacity(0.15))
 
                             creditRow(
+                                label: "Advisor",
+                                value: "Everett Foudray"
+                            )
+
+                            Divider()
+                                .overlay(AppTheme.mutedInk.opacity(0.15))
+
+                            creditRow(
                                 label: "Beta Tester",
                                 value: "Thomas Gaffey"
                             )

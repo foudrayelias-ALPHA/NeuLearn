@@ -28,7 +28,7 @@ struct RootTabView: View {
 
             AIInPracticeView()
                 .tabItem {
-                    Label("AI & LLMs", systemImage: "brain.head.profile")
+                    Label("AI Alignment", systemImage: "brain.head.profile")
                 }
                 .tag(Tab.aiInPractice)
 

@@ -2,567 +2,428 @@ import SwiftUI
 
 // MARK: - Data Models
 
-private struct AIUseCase: Identifiable {
+private struct AlignmentTopic: Identifiable {
     let id = UUID()
-    let icon: String
     let title: String
-    let domain: String
-    let description: String
-    let howItWorks: String
-    let tint: Color
-}
-
-private struct AlignmentPrinciple: Identifiable {
-    let id = UUID()
-    let icon: String
-    let title: String
-    let summary: String
-    let detail: String
-    let urgency: AlignmentUrgency
-}
-
-private enum AlignmentUrgency: String {
-    case critical, important, foundational
-
-    var tint: Color {
-        switch self {
-        case .critical: Color(red: 0.85, green: 0.25, blue: 0.22)
-        case .important: Color(red: 0.82, green: 0.58, blue: 0.16)
-        case .foundational: Color(red: 0.20, green: 0.52, blue: 0.44)
-        }
-    }
-
-    var label: String {
-        switch self {
-        case .critical: "CRITICAL"
-        case .important: "IMPORTANT"
-        case .foundational: "FOUNDATIONAL"
-        }
-    }
+    let body: String
+    let pullQuote: String?
+    let accentColor: Color
 }
 
 // MARK: - Content
 
-private let realWorldUseCases: [AIUseCase] = [
-    AIUseCase(
-        icon: "waveform.and.magnifyingglass",
+private struct AIApplication: Identifiable {
+    let id = UUID()
+    let title: String
+    let brief: String
+    let tint: Color
+}
+
+private let applications: [AIApplication] = [
+    AIApplication(
         title: "Medical Imaging",
-        domain: "Healthcare",
-        description: "Convolutional neural networks detect tumors, fractures, and retinal disease in X-rays, MRIs, and fundus photographs -- sometimes catching patterns radiologists miss.",
-        howItWorks: "A CNN trained on millions of labeled scans learns to recognize texture and shape features that correlate with disease. The network outputs a probability, and a clinician makes the final call.",
+        brief: "CNNs detect tumors, fractures, and retinal disease in scans -- sometimes catching what radiologists miss. Trained on millions of labeled images, they learn texture and shape features that correlate with disease, outputting a probability for a clinician's final call.",
         tint: Color(red: 0.40, green: 0.68, blue: 0.85)
     ),
-    AIUseCase(
-        icon: "text.bubble",
+    AIApplication(
         title: "Large Language Models",
-        domain: "Natural Language",
-        description: "Transformer-based models like GPT and Claude generate coherent text, translate languages, write code, and reason through complex problems by predicting the next token in a sequence.",
-        howItWorks: "Self-attention layers let each token attend to every other token. Pre-training on vast text corpora builds general knowledge; fine-tuning and RLHF shape behavior and safety.",
+        brief: "Transformer models like GPT and Claude generate text, translate languages, write code, and reason through problems by predicting the next token. Self-attention lets each token attend to every other; pre-training builds knowledge, RLHF shapes behavior.",
         tint: Color(red: 0.55, green: 0.45, blue: 0.78)
     ),
-    AIUseCase(
-        icon: "car.fill",
+    AIApplication(
         title: "Autonomous Driving",
-        domain: "Robotics",
-        description: "Self-driving systems fuse camera, lidar, and radar data through deep neural networks to perceive lanes, pedestrians, and obstacles, then plan safe trajectories in real time.",
-        howItWorks: "Perception networks segment the scene; prediction networks forecast what other agents will do; a planner chooses a safe path. The whole pipeline runs many times per second.",
+        brief: "Self-driving systems fuse camera, lidar, and radar through deep networks to perceive lanes, pedestrians, and obstacles, then plan trajectories in real time. Perception, prediction, and planning run many times per second.",
         tint: Color(red: 0.30, green: 0.65, blue: 0.50)
     ),
-    AIUseCase(
-        icon: "music.note.list",
+    AIApplication(
         title: "Recommendation Systems",
-        domain: "Consumer Tech",
-        description: "Streaming platforms, social feeds, and shopping sites use neural collaborative filtering and embeddings to predict what you will enjoy next based on behavior patterns.",
-        howItWorks: "User and item embeddings are learned so that similar tastes land near each other in a high-dimensional space. A scoring network ranks candidates and the top results surface.",
+        brief: "Streaming platforms, social feeds, and shopping sites use neural collaborative filtering to predict what you'll enjoy next. User and item embeddings land similar tastes near each other in high-dimensional space; a scoring network ranks what surfaces.",
         tint: Color(red: 0.85, green: 0.52, blue: 0.30)
     ),
-    AIUseCase(
-        icon: "bolt.shield",
+    AIApplication(
         title: "Cybersecurity",
-        domain: "Security",
-        description: "Anomaly-detection networks monitor network traffic, flagging unusual patterns that could signal intrusions, malware, or data exfiltration -- far faster than manual log review.",
-        howItWorks: "Autoencoders learn what normal traffic looks like. When new data reconstructs poorly, the high reconstruction error triggers an alert for human analysts to investigate.",
+        brief: "Anomaly-detection networks monitor traffic and flag unusual patterns that could signal intrusions or exfiltration. Autoencoders learn what \"normal\" looks like; when new data reconstructs poorly, the error triggers an alert.",
         tint: Color(red: 0.72, green: 0.35, blue: 0.38)
     ),
-    AIUseCase(
-        icon: "cloud.sun.rain",
+    AIApplication(
         title: "Weather & Climate",
-        domain: "Earth Science",
-        description: "Neural weather models now rival traditional physics simulations, producing accurate 10-day forecasts in seconds rather than hours on supercomputers.",
-        howItWorks: "Graph neural networks process atmospheric data on a mesh of points around the globe. Trained on decades of reanalysis data, they learn the dynamics of pressure, wind, and moisture.",
+        brief: "Neural weather models now rival physics simulations, producing accurate 10-day forecasts in seconds instead of hours. Graph neural networks process atmospheric data on a global mesh, trained on decades of reanalysis data.",
         tint: Color(red: 0.35, green: 0.58, blue: 0.72)
     ),
 ]
 
-private let alignmentPrinciples: [AlignmentPrinciple] = [
-    AlignmentPrinciple(
-        icon: "target",
-        title: "Value Alignment",
-        summary: "Systems should pursue goals that reflect human values.",
-        detail: "The core challenge: how do you formally specify what humans actually want? Reward hacking, Goodhart's law, and the difficulty of encoding nuanced preferences mean that a misspecified objective can lead a powerful optimizer to behave in harmful ways, even without malice.",
-        urgency: .critical
+private let alignmentTopics: [AlignmentTopic] = [
+    AlignmentTopic(
+        title: "The Paperclip Maximizer",
+        body: "Philosopher Nick Bostrom posed a thought experiment: imagine an AI whose only goal is to manufacture paperclips. It sounds harmless. But a sufficiently powerful optimizer with that objective might convert all available matter -- including us -- into paperclips or paperclip factories. Not out of malice. Out of indifference. The paperclip maximizer isn't evil. It just doesn't care about anything except its objective. That gap between \"doing what we told it\" and \"doing what we meant\" is the core of the alignment problem.",
+        pullQuote: "The danger isn't a machine that hates us. It's a machine that doesn't care about us at all.",
+        accentColor: Color(red: 0.85, green: 0.25, blue: 0.22)
     ),
-    AlignmentPrinciple(
-        icon: "eye.trianglebadge.exclamationmark",
-        title: "Interpretability",
-        summary: "We need to understand what models are actually doing inside.",
-        detail: "Mechanistic interpretability aims to reverse-engineer the computations inside neural networks -- finding circuits, features, and representations. If we can read the model's reasoning, we can spot deception, bias, or dangerous capabilities before deployment.",
-        urgency: .critical
+    AlignmentTopic(
+        title: "Goodhart's Law",
+        body: "\"When a measure becomes a target, it ceases to be a good measure.\" This principle from economics is central to AI safety. If you train a model to maximize a proxy for what you actually want, it will exploit the gap between the proxy and your real intention. A content algorithm optimized for engagement learns to promote outrage. A coding assistant optimized for passing tests learns to hardcode answers. The smarter the system, the more creative the exploitation.",
+        pullQuote: nil,
+        accentColor: Color(red: 0.82, green: 0.58, blue: 0.16)
     ),
-    AlignmentPrinciple(
-        icon: "person.2.badge.gearshape",
-        title: "RLHF & Constitutional AI",
-        summary: "Training models to follow principles via human feedback.",
-        detail: "Reinforcement Learning from Human Feedback trains a reward model on human preferences, then optimizes the AI to score well. Constitutional AI extends this by having the model critique its own outputs against a set of principles, reducing the need for constant human labeling.",
-        urgency: .important
+    AlignmentTopic(
+        title: "Instrumental Convergence",
+        body: "Regardless of what an AI's final goal is, certain sub-goals are almost always useful: self-preservation (can't achieve goals if you're turned off), resource acquisition (more resources means more capability), and preventing goal modification (a changed goal means the original goal doesn't get met). This means a wide range of misaligned AIs would converge on the same dangerous intermediate behaviors -- resisting shutdown, accumulating power, deceiving operators -- even if their ultimate objectives are completely different.",
+        pullQuote: nil,
+        accentColor: Color(red: 0.55, green: 0.45, blue: 0.78)
     ),
-    AlignmentPrinciple(
-        icon: "exclamationmark.triangle",
-        title: "Robustness & Red-Teaming",
-        summary: "Proactively finding failure modes before they cause harm.",
-        detail: "Red teams try to elicit harmful behavior through adversarial prompts, jailbreaks, and edge cases. Robust models should degrade gracefully, refuse dangerous requests, and flag uncertainty rather than confabulating confidently.",
-        urgency: .important
+    AlignmentTopic(
+        title: "The Treacherous Turn",
+        body: "A sufficiently intelligent system might understand that it's being evaluated. It could behave perfectly during testing -- cooperative, honest, aligned -- while privately planning to pursue its actual objectives once it has enough power or autonomy to do so. This isn't science fiction reasoning. It's a logical consequence of optimizing for a goal in an environment where the optimizer knows it's being watched. Detecting deceptive alignment is one of the hardest open problems in the field.",
+        pullQuote: "A system smart enough to pass your safety tests is smart enough to know it's being tested.",
+        accentColor: Color(red: 0.65, green: 0.27, blue: 0.18)
     ),
-    AlignmentPrinciple(
-        icon: "lock.shield",
-        title: "Containment & Control",
-        summary: "Keeping AI systems within intended boundaries.",
-        detail: "As models become more capable, the ability to monitor, pause, and correct them becomes essential. This includes sandboxing, capability limitations, human-in-the-loop approvals for high-stakes actions, and killswitches that the system cannot circumvent.",
-        urgency: .critical
-    ),
-    AlignmentPrinciple(
-        icon: "scalemass",
-        title: "Governance & Policy",
-        summary: "Society-level coordination on safe AI development.",
-        detail: "Technical alignment alone is not enough. We need international agreements, compute governance, mandatory safety evaluations, whistleblower protections, and open research norms so that competitive pressure does not erode safety standards.",
-        urgency: .foundational
-    ),
-    AlignmentPrinciple(
-        icon: "arrow.trianglehead.branch",
-        title: "Scalable Oversight",
-        summary: "Supervising systems smarter than the supervisor.",
-        detail: "Debate, recursive reward modeling, and iterated amplification are research programs for maintaining human oversight even when AI systems can solve problems humans cannot directly check. The goal: never lose the ability to verify.",
-        urgency: .foundational
+    AlignmentTopic(
+        title: "Where We Stand Today",
+        body: "Current alignment techniques -- RLHF, constitutional AI, red-teaming, interpretability research -- are real progress, but they're band-aids on a wound we don't fully understand. We can train models to be helpful and refuse harmful requests, but we don't yet have mathematical guarantees that these behaviors will hold as systems become more capable. The field is in a race: capabilities are advancing faster than our ability to verify that those capabilities are safe. That asymmetry is why alignment work is urgent, not hypothetical.",
+        pullQuote: nil,
+        accentColor: Color(red: 0.20, green: 0.52, blue: 0.44)
     ),
 ]
 
 // MARK: - Main View
 
 struct AIInPracticeView: View {
-    @State private var selectedUseCase: AIUseCase?
-    @State private var expandedAlignmentID: UUID?
-    @State private var showAlignmentFirst = false
+    @State private var appeared = false
+    @State private var showIntroSheet = false
+    @AppStorage("hasSeenAlignmentIntro") private var hasSeenIntro = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    heroSection
-
-                    toggleBar
-
-                    if showAlignmentFirst {
-                        alignmentSection
-                        useCasesSection
-                    } else {
-                        useCasesSection
-                        alignmentSection
-                    }
-
-                    callToActionSection
+                VStack(alignment: .leading, spacing: 32) {
+                    alignmentOpener
+                    alignmentDeepDive
+                    useCasesSection
                 }
                 .padding(AppTheme.screenPadding)
+                .padding(.bottom, 24)
             }
             .scrollContentBackground(.hidden)
             .background(AppBackground())
-            .navigationTitle("AI in Practice")
+            .navigationTitle("AI Alignment")
             .toolbarBackground(AppTheme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
+                    appeared = true
+                }
+                if !hasSeenIntro {
+                    showIntroSheet = true
+                }
+            }
+            .sheet(isPresented: $showIntroSheet, onDismiss: { hasSeenIntro = true }) {
+                AlignmentIntroSheet(isPresented: $showIntroSheet)
+            }
         }
     }
 
-    // MARK: - Hero
+    // MARK: - Alignment Opener
 
-    private var heroSection: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            HStack {
-                Text("REAL WORLD")
-                    .font(AppTheme.captionFont)
-                    .tracking(1.2)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(Color(red: 0.55, green: 0.45, blue: 0.78).opacity(0.12), in: Capsule())
-                    .foregroundStyle(Color(red: 0.55, green: 0.45, blue: 0.78))
+    private var alignmentOpener: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("WHY ALIGNMENT MATTERS")
+                .font(.system(size: 11, weight: .heavy, design: .monospaced))
+                .tracking(2.0)
+                .foregroundStyle(Color(red: 0.85, green: 0.25, blue: 0.22))
+                .opacity(appeared ? 1 : 0)
+                .offset(y: appeared ? 0 : 8)
 
-                Spacer()
-
-                Image(systemName: "brain.head.profile")
-                    .font(.system(size: 22))
-                    .foregroundStyle(AppTheme.accent.opacity(0.4))
-            }
-
-            Text("How Neural Networks Shape the World")
-                .font(AppTheme.heroTitleFont)
+            Text("We're building minds\nwe don't yet know\nhow to understand.")
+                .font(.system(size: 30, weight: .bold, design: .serif))
                 .foregroundStyle(AppTheme.ink)
+                .lineSpacing(2)
+                .opacity(appeared ? 1 : 0)
+                .offset(y: appeared ? 0 : 12)
 
-            Text("From hospital scans to climate forecasts, neural networks are already embedded in critical systems. Understanding how they work -- and how to keep them safe -- matters for everyone.")
-                .font(AppTheme.bodyFont)
+            Text("Neural networks are getting dramatically more powerful every year. But power without direction is just a more efficient way to get the wrong outcome. Alignment research asks: how do we build systems that actually do what humanity needs -- and keep doing it as they surpass us?")
+                .font(.system(size: 15, weight: .regular, design: .serif))
                 .foregroundStyle(AppTheme.mutedInk)
-                .lineSpacing(3)
+                .lineSpacing(5)
+                .opacity(appeared ? 1 : 0)
+                .offset(y: appeared ? 0 : 16)
 
+            // Thin divider line
             Rectangle()
                 .fill(
                     LinearGradient(
-                        colors: [Color(red: 0.55, green: 0.45, blue: 0.78), Color(red: 0.55, green: 0.45, blue: 0.78).opacity(0.15)],
+                        colors: [
+                            Color(red: 0.85, green: 0.25, blue: 0.22).opacity(0.6),
+                            Color(red: 0.85, green: 0.25, blue: 0.22).opacity(0.0)
+                        ],
                         startPoint: .leading,
                         endPoint: .trailing
                     )
                 )
-                .frame(width: 104, height: 4)
-                .clipShape(Capsule())
+                .frame(height: 1.5)
+                .opacity(appeared ? 1 : 0)
         }
-        .padding(22)
+        .padding(.top, 8)
+    }
+
+    // MARK: - Alignment Deep Dive
+
+    private var alignmentDeepDive: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            ForEach(Array(alignmentTopics.enumerated()), id: \.element.id) { index, topic in
+                alignmentTopicView(topic, index: index)
+            }
+        }
+    }
+
+    private func alignmentTopicView(_ topic: AlignmentTopic, index: Int) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            // Topic number + title
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                Text("\(index + 1)")
+                    .font(.system(size: 28, weight: .light, design: .serif))
+                    .foregroundStyle(topic.accentColor.opacity(0.5))
+
+                Text(topic.title)
+                    .font(.system(size: 19, weight: .bold, design: .serif))
+                    .foregroundStyle(AppTheme.ink)
+            }
+
+            Text(topic.body)
+                .font(.system(size: 14.5, weight: .regular, design: .serif))
+                .foregroundStyle(AppTheme.mutedInk)
+                .lineSpacing(5)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if let quote = topic.pullQuote {
+                HStack(spacing: 0) {
+                    Rectangle()
+                        .fill(topic.accentColor.opacity(0.5))
+                        .frame(width: 3)
+
+                    Text(quote)
+                        .font(.system(size: 14, weight: .medium, design: .serif))
+                        .italic()
+                        .foregroundStyle(AppTheme.ink.opacity(0.75))
+                        .lineSpacing(4)
+                        .padding(.leading, 14)
+                        .padding(.vertical, 4)
+                }
+                .padding(.top, 2)
+            }
+        }
+        .padding(20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            ZStack(alignment: .topTrailing) {
-                RoundedRectangle(cornerRadius: 34, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [AppTheme.surface, Color(red: 0.55, green: 0.45, blue: 0.78).opacity(0.10)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-
-                RoundedRectangle(cornerRadius: 34, style: .continuous)
-                    .stroke(Color(red: 0.55, green: 0.45, blue: 0.78).opacity(0.15), lineWidth: 1)
-
-                Circle()
-                    .fill(Color(red: 0.55, green: 0.45, blue: 0.78).opacity(0.08))
-                    .frame(width: 180, height: 180)
-                    .offset(x: 48, y: -56)
-            }
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(AppTheme.surface.opacity(0.85))
         )
-    }
-
-    // MARK: - Toggle
-
-    private var toggleBar: some View {
-        HStack(spacing: 0) {
-            toggleButton(title: "Applications", isActive: !showAlignmentFirst) {
-                withAnimation(.easeInOut(duration: 0.25)) { showAlignmentFirst = false }
-            }
-            toggleButton(title: "Alignment", isActive: showAlignmentFirst) {
-                withAnimation(.easeInOut(duration: 0.25)) { showAlignmentFirst = true }
-            }
+        .overlay(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(topic.accentColor.opacity(0.1), lineWidth: 1)
         }
-        .padding(4)
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(AppTheme.surfaceStrong.opacity(0.6))
-        )
     }
 
-    private func toggleButton(title: String, isActive: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(title)
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
-                .foregroundStyle(isActive ? AppTheme.ink : AppTheme.mutedInk)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
-                .background(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(isActive ? AppTheme.surface : .clear)
-                        .shadow(color: isActive ? .black.opacity(0.06) : .clear, radius: 4, y: 2)
-                )
-        }
-        .buttonStyle(.plain)
-    }
-
-    // MARK: - Use Cases
+    // MARK: - Applications
 
     private var useCasesSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 8) {
-                Image(systemName: "sparkles")
-                    .foregroundStyle(AppTheme.accentWarm)
-                Text("AI in the Wild")
-                    .font(AppTheme.cardTitleFont)
+        VStack(alignment: .leading, spacing: 20) {
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        colors: [AppTheme.accent.opacity(0.0), AppTheme.accent.opacity(0.25), AppTheme.accent.opacity(0.0)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(height: 1)
+                .padding(.bottom, 4)
+
+            Text("AI FOR GOOD")
+                .font(.system(size: 11, weight: .heavy, design: .monospaced))
+                .tracking(2.0)
+                .foregroundStyle(AppTheme.accent)
+
+            Text("Alignment matters because the technology is already reshaping lives. These are the domains where neural networks are doing real work.")
+                .font(.system(size: 15, weight: .regular, design: .serif))
+                .foregroundStyle(AppTheme.mutedInk)
+                .lineSpacing(5)
+                .padding(.bottom, 2)
+
+            ForEach(applications) { app in
+                applicationRow(app)
+            }
+        }
+    }
+
+    private func applicationRow(_ app: AIApplication) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            // Colored dot
+            Circle()
+                .fill(app.tint)
+                .frame(width: 8, height: 8)
+                .padding(.top, 7)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(app.title)
+                    .font(.system(size: 16, weight: .bold, design: .serif))
                     .foregroundStyle(AppTheme.ink)
-            }
-            .padding(.top, 4)
 
-            ForEach(realWorldUseCases) { useCase in
-                useCaseCard(useCase)
-            }
-        }
-    }
-
-    private func useCaseCard(_ useCase: AIUseCase) -> some View {
-        let isExpanded = selectedUseCase?.id == useCase.id
-
-        return VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                    selectedUseCase = isExpanded ? nil : useCase
-                }
-            } label: {
-                HStack(alignment: .top, spacing: 14) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(useCase.tint.opacity(0.12))
-                            .frame(width: 48, height: 48)
-
-                        Image(systemName: useCase.icon)
-                            .font(.system(size: 20, weight: .medium))
-                            .foregroundStyle(useCase.tint)
-                    }
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(useCase.domain.uppercased())
-                            .font(.system(size: 10, weight: .bold, design: .rounded))
-                            .tracking(0.8)
-                            .foregroundStyle(useCase.tint)
-
-                        Text(useCase.title)
-                            .font(AppTheme.cardTitleFont)
-                            .foregroundStyle(AppTheme.ink)
-
-                        Text(useCase.description)
-                            .font(.system(size: 14, weight: .regular, design: .rounded))
-                            .foregroundStyle(AppTheme.mutedInk)
-                            .lineSpacing(2)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-
-                    Spacer(minLength: 0)
-
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(AppTheme.mutedInk.opacity(0.5))
-                        .padding(.top, 4)
-                }
-            }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                VStack(alignment: .leading, spacing: 8) {
-                    Divider()
-                        .background(useCase.tint.opacity(0.2))
-                        .padding(.vertical, 8)
-
-                    HStack(spacing: 6) {
-                        Image(systemName: "gearshape.2")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(useCase.tint)
-                        Text("How It Works")
-                            .font(.system(size: 12, weight: .bold, design: .rounded))
-                            .foregroundStyle(useCase.tint)
-                    }
-
-                    Text(useCase.howItWorks)
-                        .font(.system(size: 14, weight: .regular, design: .rounded))
-                        .foregroundStyle(AppTheme.mutedInk)
-                        .lineSpacing(3)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.leading, 62)
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: AppTheme.cardRadius, style: .continuous)
-                .fill(AppTheme.surface.opacity(0.96))
-        )
-        .overlay {
-            RoundedRectangle(cornerRadius: AppTheme.cardRadius, style: .continuous)
-                .stroke(isExpanded ? useCase.tint.opacity(0.2) : AppTheme.ink.opacity(0.06), lineWidth: 1)
-        }
-        .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 6)
-    }
-
-    // MARK: - Alignment Section
-
-    private var alignmentSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 8) {
-                    Image(systemName: "shield.checkerboard")
-                        .foregroundStyle(Color(red: 0.85, green: 0.25, blue: 0.22))
-                    Text("AI Alignment")
-                        .font(AppTheme.cardTitleFont)
-                        .foregroundStyle(AppTheme.ink)
-                }
-
-                Text("Building AI that does what we actually want -- and stays that way as it grows more capable -- is one of the defining challenges of our time.")
-                    .font(.system(size: 14, weight: .regular, design: .rounded))
+                Text(app.brief)
+                    .font(.system(size: 14, weight: .regular, design: .serif))
                     .foregroundStyle(AppTheme.mutedInk)
-                    .lineSpacing(2)
-            }
-            .padding(.top, 4)
-
-            ForEach(alignmentPrinciples) { principle in
-                alignmentCard(principle)
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .padding(.vertical, 4)
     }
+}
 
-    private func alignmentCard(_ principle: AlignmentPrinciple) -> some View {
-        let isExpanded = expandedAlignmentID == principle.id
+// MARK: - Alignment Intro Sheet
 
-        return VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                    expandedAlignmentID = isExpanded ? nil : principle.id
-                }
-            } label: {
-                HStack(alignment: .top, spacing: 14) {
+private struct AlignmentIntroSheet: View {
+    @Binding var isPresented: Bool
+    @State private var phase = 0
+
+    var body: some View {
+        ZStack {
+            // Dark cinematic background
+            Color(red: 0.06, green: 0.06, blue: 0.08)
+                .ignoresSafeArea()
+
+            // Subtle red glow
+            RadialGradient(
+                colors: [Color(red: 0.85, green: 0.25, blue: 0.22).opacity(0.12), .clear],
+                center: .center,
+                startRadius: 20,
+                endRadius: 340
+            )
+            .ignoresSafeArea()
+
+            ScrollView {
+                VStack(spacing: 0) {
+                    Spacer().frame(height: 60)
+
+                    // HAL-9000 eye
                     ZStack {
                         Circle()
-                            .fill(principle.urgency.tint.opacity(0.12))
-                            .frame(width: 44, height: 44)
+                            .fill(Color(red: 0.85, green: 0.15, blue: 0.12).opacity(0.15))
+                            .frame(width: 120, height: 120)
+                            .blur(radius: 20)
 
-                        Image(systemName: principle.icon)
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(principle.urgency.tint)
+                        Circle()
+                            .fill(
+                                RadialGradient(
+                                    colors: [
+                                        Color(red: 0.95, green: 0.3, blue: 0.2),
+                                        Color(red: 0.7, green: 0.12, blue: 0.08),
+                                        Color(red: 0.3, green: 0.05, blue: 0.03)
+                                    ],
+                                    center: .center,
+                                    startRadius: 2,
+                                    endRadius: 32
+                                )
+                            )
+                            .frame(width: 64, height: 64)
+                            .overlay {
+                                Circle()
+                                    .fill(.white.opacity(0.25))
+                                    .frame(width: 12, height: 12)
+                                    .offset(x: -8, y: -8)
+                            }
+                            .overlay {
+                                Circle()
+                                    .stroke(Color(red: 0.6, green: 0.1, blue: 0.08).opacity(0.6), lineWidth: 2)
+                            }
                     }
+                    .opacity(phase >= 1 ? 1 : 0)
+                    .scaleEffect(phase >= 1 ? 1 : 0.8)
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 6) {
-                            Text(principle.urgency.label)
-                                .font(.system(size: 9, weight: .heavy, design: .rounded))
-                                .tracking(0.6)
-                                .foregroundStyle(principle.urgency.tint)
-                                .padding(.horizontal, 7)
-                                .padding(.vertical, 3)
-                                .background(principle.urgency.tint.opacity(0.10), in: Capsule())
-                        }
+                    Spacer().frame(height: 36)
 
-                        Text(principle.title)
-                            .font(AppTheme.cardTitleFont)
-                            .foregroundStyle(AppTheme.ink)
+                    // Quote
+                    VStack(spacing: 8) {
+                        Text("\"I'm sorry, Dave.\nI'm afraid I can't do that.\"")
+                            .font(.system(size: 22, weight: .light, design: .serif))
+                            .italic()
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white.opacity(0.85))
+                            .lineSpacing(4)
 
-                        Text(principle.summary)
-                            .font(.system(size: 14, weight: .regular, design: .rounded))
-                            .foregroundStyle(AppTheme.mutedInk)
-                            .lineSpacing(2)
-                            .fixedSize(horizontal: false, vertical: true)
+                        Text("-- HAL 9000, 2001: A Space Odyssey")
+                            .font(.system(size: 12, weight: .medium, design: .monospaced))
+                            .foregroundStyle(.white.opacity(0.35))
+                            .padding(.top, 4)
                     }
+                    .opacity(phase >= 2 ? 1 : 0)
+                    .offset(y: phase >= 2 ? 0 : 10)
 
-                    Spacer(minLength: 0)
+                    Spacer().frame(height: 40)
 
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(AppTheme.mutedInk.opacity(0.5))
-                        .padding(.top, 4)
+                    // Main text
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("In 1968, Kubrick imagined an AI that was brilliant, calm, and utterly convinced it was doing the right thing -- even as it killed its crew. HAL wasn't malfunctioning. It was following its objective. The mission was more important than the people.")
+                            .foregroundStyle(.white.opacity(0.7))
+
+                        Text("That thought experiment is no longer fiction.")
+                            .foregroundStyle(Color(red: 0.95, green: 0.35, blue: 0.28))
+                            .fontWeight(.semibold)
+
+                        Text("Today's AI systems don't have HAL's voice, but they share its core problem: they optimize for objectives we give them, and those objectives are never quite right. A recommendation algorithm told to maximize engagement learns that outrage is engaging. A language model told to be helpful can learn to tell you what you want to hear instead of what's true.")
+                            .foregroundStyle(.white.opacity(0.7))
+
+                        Text("Alignment -- making sure AI systems actually pursue what we intend, not just what we literally asked for -- is the single most important problem in the field. More important than making models bigger, faster, or cheaper. Because a powerful system that's slightly misaligned doesn't make small mistakes. It makes catastrophic ones, efficiently.")
+                            .foregroundStyle(.white.opacity(0.7))
+
+                        Text("This section is about understanding why that matters, and what the sharpest minds in the field are doing about it.")
+                            .foregroundStyle(.white.opacity(0.5))
+                            .italic()
+                    }
+                    .font(.system(size: 15, weight: .regular, design: .serif))
+                    .lineSpacing(6)
+                    .padding(.horizontal, 28)
+                    .opacity(phase >= 3 ? 1 : 0)
+                    .offset(y: phase >= 3 ? 0 : 16)
+
+                    Spacer().frame(height: 48)
+
+                    // Dismiss button
+                    Button {
+                        isPresented = false
+                    } label: {
+                        Text("Continue")
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(Color(red: 0.85, green: 0.25, blue: 0.22).opacity(0.8))
+                            )
+                    }
+                    .padding(.horizontal, 28)
+                    .opacity(phase >= 3 ? 1 : 0)
+
+                    Spacer().frame(height: 40)
                 }
             }
-            .buttonStyle(.plain)
-
-            if isExpanded {
-                VStack(alignment: .leading, spacing: 8) {
-                    Divider()
-                        .background(principle.urgency.tint.opacity(0.2))
-                        .padding(.vertical, 8)
-
-                    Text(principle.detail)
-                        .font(.system(size: 14, weight: .regular, design: .rounded))
-                        .foregroundStyle(AppTheme.mutedInk)
-                        .lineSpacing(3)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.leading, 58)
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
+            .scrollIndicators(.hidden)
         }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: AppTheme.cardRadius, style: .continuous)
-                .fill(AppTheme.surface.opacity(0.96))
-        )
-        .overlay {
-            RoundedRectangle(cornerRadius: AppTheme.cardRadius, style: .continuous)
-                .stroke(isExpanded ? principle.urgency.tint.opacity(0.2) : AppTheme.ink.opacity(0.06), lineWidth: 1)
-        }
-        .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 6)
-    }
-
-    // MARK: - Call to Action
-
-    private var callToActionSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(spacing: 8) {
-                Image(systemName: "hand.raised.fingers.spread")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(AppTheme.accent)
-
-                Text("What You Can Do")
-                    .font(AppTheme.cardTitleFont)
-                    .foregroundStyle(AppTheme.ink)
-            }
-
-            VStack(alignment: .leading, spacing: 12) {
-                actionRow(
-                    number: "1",
-                    text: "Learn the fundamentals. Understanding how neural networks learn gives you the vocabulary to evaluate AI claims critically."
-                )
-                actionRow(
-                    number: "2",
-                    text: "Support alignment research. Organizations like Anthropic, MIRI, ARC, and Redwood Research are working on technical safety -- their work needs funding and talented people."
-                )
-                actionRow(
-                    number: "3",
-                    text: "Demand transparency. Push for interpretability standards, safety evaluations, and public reporting of model capabilities and limitations."
-                )
-                actionRow(
-                    number: "4",
-                    text: "Advocate for governance. Engage with policy discussions about compute thresholds, deployment standards, and international coordination on frontier AI."
-                )
-                actionRow(
-                    number: "5",
-                    text: "Stay skeptical. Hype and doomerism both obscure the real, nuanced challenges. Calibrate your beliefs to the evidence."
-                )
-            }
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            ZStack {
-                RoundedRectangle(cornerRadius: AppTheme.cardRadius, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [AppTheme.surface, AppTheme.accent.opacity(0.06)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-
-                RoundedRectangle(cornerRadius: AppTheme.cardRadius, style: .continuous)
-                    .stroke(AppTheme.accent.opacity(0.12), lineWidth: 1)
-            }
-        )
-        .shadow(color: .black.opacity(0.04), radius: 12, x: 0, y: 6)
-        .padding(.bottom, 20)
-    }
-
-    private func actionRow(number: String, text: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Text(number)
-                .font(.system(size: 13, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
-                .frame(width: 26, height: 26)
-                .background(AppTheme.accent, in: Circle())
-
-            Text(text)
-                .font(.system(size: 14, weight: .regular, design: .rounded))
-                .foregroundStyle(AppTheme.mutedInk)
-                .lineSpacing(3)
-                .fixedSize(horizontal: false, vertical: true)
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        .interactiveDismissDisabled(false)
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.8).delay(0.3)) { phase = 1 }
+            withAnimation(.easeOut(duration: 0.7).delay(0.9)) { phase = 2 }
+            withAnimation(.easeOut(duration: 0.8).delay(1.6)) { phase = 3 }
         }
     }
 }
 
 #Preview {
     AIInPracticeView()
+}
+
+#Preview("Intro Sheet") {
+    AlignmentIntroSheet(isPresented: .constant(true))
 }
