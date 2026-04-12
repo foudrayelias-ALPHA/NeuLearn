@@ -64,7 +64,7 @@ struct LaunchExperienceView: View {
                         .frame(maxWidth: 460)
                 }
 
-                TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { context in
+                TimelineView(.animation(minimumInterval: 1.0 / 30.0)) { context in
                     let elapsed = context.date.timeIntervalSince(startDate)
 
                     VStack(spacing: 18) {
