@@ -9,6 +9,7 @@ struct RootTabView: View {
         case explore
         case aiInPractice
         case visualLab
+        case applications
     }
 
     var body: some View {
@@ -36,6 +37,12 @@ struct RootTabView: View {
                     Label("Visual Lab", systemImage: "point.3.connected.trianglepath.dotted")
                 }
                 .tag(Tab.visualLab)
+
+            ApplicationsView()
+                .tabItem {
+                    Label("Applications", systemImage: "shippingbox")
+                }
+                .tag(Tab.applications)
         }
         .tint(AppTheme.accent)
         .toolbarBackground(.hidden, for: .tabBar)

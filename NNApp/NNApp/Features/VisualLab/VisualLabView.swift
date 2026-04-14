@@ -181,6 +181,7 @@ struct VisualLabView: View {
                 let h2 = hidden2Positions(size)
                 let out = outputPosition(size)
                 let wires = allWires(inp: inp, h1: h1, h2: h2, out: out)
+                let nodeSizing = currentNodeSizing()
 
                 for w in wires { drawWire(ctx: ctx, w: w, time: time) }
 
@@ -197,18 +198,18 @@ struct VisualLabView: View {
 
                 // Input nodes
                 for (i, pos) in inp.enumerated() {
-                    drawNode(ctx: ctx, center: pos, name: "In\(i+1)", value: inspectedStep.inputs[i], color: LabColors.input, radius: 20)
+                    drawNode(ctx: ctx, center: pos, name: "In\(i+1)", value: inspectedStep.inputs[i], color: LabColors.input, radius: nodeSizing.inputRadii[i])
                 }
                 // Hidden layer 1
                 for (i, pos) in h1.enumerated() {
-                    drawNode(ctx: ctx, center: pos, name: "H1.\(i+1)", value: inspectedStep.hidden1Activations[i], color: LabColors.hidden1, radius: 18)
+                    drawNode(ctx: ctx, center: pos, name: "H1.\(i+1)", value: inspectedStep.hidden1Activations[i], color: LabColors.hidden1, radius: nodeSizing.hidden1Radii[i])
                 }
                 // Hidden layer 2
                 for (i, pos) in h2.enumerated() {
-                    drawNode(ctx: ctx, center: pos, name: "H2.\(i+1)", value: inspectedStep.hidden2Activations[i], color: LabColors.hidden2, radius: 18)
+                    drawNode(ctx: ctx, center: pos, name: "H2.\(i+1)", value: inspectedStep.hidden2Activations[i], color: LabColors.hidden2, radius: nodeSizing.hidden2Radii[i])
                 }
                 // Output node
-                drawNode(ctx: ctx, center: out, name: "Out", value: inspectedStep.output, color: LabColors.output, radius: 24)
+                drawNode(ctx: ctx, center: out, name: "Out", value: inspectedStep.output, color: LabColors.output, radius: nodeSizing.outputRadius)
             }
         }
         .frame(height: 340)
@@ -257,6 +258,13 @@ struct VisualLabView: View {
         let layer: Layer
     }
 
+    private struct NodeSizing {
+        let inputRadii: [CGFloat]
+        let hidden1Radii: [CGFloat]
+        let hidden2Radii: [CGFloat]
+        let outputRadius: CGFloat
+    }
+
     private func allWires(inp: [CGPoint], h1: [CGPoint], h2: [CGPoint], out: CGPoint) -> [Wire] {
         var wires: [Wire] = []
 
@@ -300,6 +308,76 @@ struct VisualLabView: View {
         }
 
         return wires
+    }
+
+    private func currentNodeSizing() -> NodeSizing {
+        let inputToHidden1 = activePhase == .update ? inspectedStep.weightsInputToHidden1After : inspectedStep.weightsInputToHidden1Before
+        let hidden1ToHidden2 = activePhase == .update ? inspectedStep.weightsHidden1ToHidden2After : inspectedStep.weightsHidden1ToHidden2Before
+        let hidden2ToOutput = activePhase == .update ? inspectedStep.weightsHidden2ToOutputAfter : inspectedStep.weightsHidden2ToOutputBefore
+
+        let inputStrengths = (0..<SimpleNetworkSimulation.inputCount).map { inputIndex in
+            averageAbsWeight(
+                from: inputToHidden1,
+                startIndex: inputIndex * SimpleNetworkSimulation.hidden1Count,
+                count: SimpleNetworkSimulation.hidden1Count
+            )
+        }
+
+        let hidden1Strengths = (0..<SimpleNetworkSimulation.hidden1Count).map { hiddenIndex in
+            let incoming = (0..<SimpleNetworkSimulation.inputCount).map {
+                abs(inputToHidden1[$0 * SimpleNetworkSimulation.hidden1Count + hiddenIndex])
+            }
+            let outgoing = (0..<SimpleNetworkSimulation.hidden2Count).map {
+                abs(hidden1ToHidden2[hiddenIndex * SimpleNetworkSimulation.hidden2Count + $0])
+            }
+            return averageAbsWeight(incoming + outgoing)
+        }
+
+        let hidden2Strengths = (0..<SimpleNetworkSimulation.hidden2Count).map { hiddenIndex in
+            let incoming = (0..<SimpleNetworkSimulation.hidden1Count).map {
+                abs(hidden1ToHidden2[$0 * SimpleNetworkSimulation.hidden2Count + hiddenIndex])
+            }
+            let outgoing = [abs(hidden2ToOutput[hiddenIndex])]
+            return averageAbsWeight(incoming + outgoing)
+        }
+
+        let allStrengths = inputStrengths + hidden1Strengths + hidden2Strengths
+        let outputStrength = averageAbsWeight(hidden2ToOutput.map(abs))
+
+        return NodeSizing(
+            inputRadii: scaledNodeRadii(for: inputStrengths, range: 17...23),
+            hidden1Radii: scaledNodeRadii(for: hidden1Strengths, range: 16...22),
+            hidden2Radii: scaledNodeRadii(for: hidden2Strengths, range: 16...22),
+            outputRadius: scaledNodeRadius(for: outputStrength, among: allStrengths + [outputStrength], range: 22...28)
+        )
+    }
+
+    private func averageAbsWeight(from weights: [Double], startIndex: Int, count: Int) -> Double {
+        averageAbsWeight(Array(weights[startIndex..<(startIndex + count)]))
+    }
+
+    private func averageAbsWeight(_ weights: [Double]) -> Double {
+        guard !weights.isEmpty else { return 0 }
+        return weights.map(abs).reduce(0, +) / Double(weights.count)
+    }
+
+    private func scaledNodeRadii(for strengths: [Double], range: ClosedRange<CGFloat>) -> [CGFloat] {
+        strengths.map { scaledNodeRadius(for: $0, among: strengths, range: range) }
+    }
+
+    private func scaledNodeRadius(for strength: Double, among strengths: [Double], range: ClosedRange<CGFloat>) -> CGFloat {
+        guard let minStrength = strengths.min(), let maxStrength = strengths.max() else {
+            return (range.lowerBound + range.upperBound) * 0.5
+        }
+
+        let normalized: CGFloat
+        if maxStrength - minStrength < 0.0001 {
+            normalized = 0.5
+        } else {
+            normalized = CGFloat((strength - minStrength) / (maxStrength - minStrength))
+        }
+
+        return range.lowerBound + (range.upperBound - range.lowerBound) * normalized
     }
 
     // MARK: - Phase Timeline

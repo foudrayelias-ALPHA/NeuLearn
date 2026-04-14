@@ -12,8 +12,18 @@ enum SampleContent {
         lessonFeedforward, lessonCNN, lessonTransformers,
     ]
 
+    static let applicationsLessons: [Lesson] = [
+        lessonWeightsReally,
+        lessonSignals,
+        lessonNumbersInNumbersOut,
+        lessonComputersDoTheMath,
+        lessonTrainingToDeployment,
+        lessonWhatNetworkLearned,
+        lessonLimitsOfNumbers,
+    ]
+
     static var lessons: [Lesson] {
-        existingLessons + generatedExploreLessons
+        existingLessons + applicationsLessons + generatedExploreLessons
     }
 
     static func lesson(for id: UUID) -> Lesson? {
@@ -29,6 +39,151 @@ enum SampleContent {
     }
 
     // MARK: Beginner
+
+    static let lessonWeightsReally = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000001")!,
+        title: "What Are Weights, Really?",
+        summary: "See a trained model as stored numbers, not magic.",
+        level: .beginner,
+        sections: [
+            LessonSection(title: "Weights are values", body: "A weight is just a floating-point number. In code, weights usually live inside arrays, vectors, or matrices. A neuron does not store a rule like \"look for whiskers\" in plain English. It stores many numeric values that push outputs up or down during the forward pass."),
+            LessonSection(title: "A model is a file of numbers", body: "After training, those weights are written to disk. A model file is often a very large collection of numbers plus a little metadata describing shapes and names. When someone says they downloaded a model checkpoint, they usually mean they downloaded learned weights that can be loaded back into memory for inference."),
+            LessonSection(title: "Architecture vs. weights", body: "The architecture is the structure: how many layers, what kinds of operations, and how tensors flow. The weights are the learned recipe inside that structure. Same architecture, different weights, completely different behavior. Think of the architecture as the kitchen and the weights as the ingredients and proportions that make a specific dish.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "Which statement is most accurate?",
+            type: .multipleChoice(options: [
+                ChallengeOption(text: "Weights are English rules hidden inside each neuron.", isCorrect: false, explanation: "Weights are not text instructions. They are numeric parameters."),
+                ChallengeOption(text: "Weights are learned floating-point values stored in arrays or matrices.", isCorrect: true, explanation: "Correct. That is the concrete representation used by neural networks."),
+                ChallengeOption(text: "Weights exist only while training and disappear during inference.", isCorrect: false, explanation: "Inference depends on the saved weights."),
+                ChallengeOption(text: "Weights are the same thing as the architecture.", isCorrect: false, explanation: "Architecture describes structure. Weights are the learned parameter values.")
+            ])
+        )
+    )
+
+    static let lessonSignals = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000007")!,
+        title: "What Are Signals?",
+        summary: "How information actually travels through a network.",
+        level: .beginner,
+        sections: [
+            LessonSection(title: "A signal is a number in motion", body: "In neural networks, a signal is just a number being passed from one part of the network to the next. One neuron produces an output value, and that value becomes part of the next neuron's input. There is no hidden substance moving through the model. The signal is the value itself."),
+            LessonSection(title: "Weights shape signals", body: "A raw signal does not stay unchanged. Each receiving neuron multiplies incoming signals by weights, adds them together, and often applies an activation function. That means the same incoming signal can be amplified, weakened, flipped, or ignored depending on the learned weights."),
+            LessonSection(title: "From layer to layer", body: "As signals move through deeper layers, they become transformed representations of the original input. Early signals may reflect simple measurements like brightness or token identity. Later signals may encode more abstract combinations such as edges, shapes, or context. The network's entire forward pass is a chain of signal transformations.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "Which description of a neural-network signal is best?",
+            type: .multipleChoice(options: [
+                ChallengeOption(text: "A signal is a special kind of energy stored inside each layer.", isCorrect: false, explanation: "Signals are not a separate physical substance inside the model."),
+                ChallengeOption(text: "A signal is a numeric value passed forward and transformed by weights and activations.", isCorrect: true, explanation: "Correct. Signals are just values moving through the computation."),
+                ChallengeOption(text: "A signal is another name for the model's architecture.", isCorrect: false, explanation: "Architecture is the structure of the network, not the values flowing through it."),
+                ChallengeOption(text: "Signals only exist during training, not inference.", isCorrect: false, explanation: "Inference is also a forward pass, so signals still move through the network.")
+            ])
+        )
+    )
+
+    static let lessonNumbersInNumbersOut = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000002")!,
+        title: "Numbers In, Numbers Out",
+        summary: "How images, text, and audio become machine-readable values.",
+        level: .beginner,
+        sections: [
+            LessonSection(title: "Inputs become numbers", body: "Computers only manipulate numbers. An image becomes pixel values. Text becomes token IDs. Audio becomes sampled amplitudes over time. Before a neural network sees anything, that thing has already been converted into a numerical representation."),
+            LessonSection(title: "Outputs are numbers too", body: "The output of a model is also numeric. A classifier might produce one score per label. A language model produces one score for every possible next token. An embedding model produces a vector of values that place similar meanings near each other in space."),
+            LessonSection(title: "What a prediction really means", body: "When we say a network recognized a cat, we usually mean the score tied to the cat label ended up higher than the other labels. The system did not attach the human concept of catness. It computed numbers, and we interpreted the highest one using a label map.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "If a classifier outputs [0.12 dog, 0.81 cat, 0.07 bird], what does the model predict?",
+            type: .multipleChoice(options: [
+                ChallengeOption(text: "Dog, because it appears first in the list.", isCorrect: false, explanation: "Order does not matter here. The largest score matters."),
+                ChallengeOption(text: "Cat, because that label has the highest output value.", isCorrect: true, explanation: "Correct. The prediction is the label attached to the highest score."),
+                ChallengeOption(text: "Bird, because small numbers are more confident.", isCorrect: false, explanation: "Confidence is not encoded by choosing the smallest score."),
+                ChallengeOption(text: "Nothing. Outputs are only used during training.", isCorrect: false, explanation: "Outputs are what inference produces at runtime.")
+            ])
+        )
+    )
+
+    static let lessonComputersDoTheMath = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000003")!,
+        title: "How Computers Do the Math",
+        summary: "Why matrix multiplication and parallel hardware dominate deep learning.",
+        level: .intermediate,
+        sections: [
+            LessonSection(title: "Matrix multiply everywhere", body: "Under the hood, many neural network layers reduce to matrix multiplication plus simple element-wise operations. A batch of inputs is multiplied by a matrix of weights, biases are added, and then an activation or normalization step follows. That pattern appears again and again."),
+            LessonSection(title: "Why GPUs matter", body: "GPUs are valuable because they can perform huge numbers of similar multiply-add operations in parallel. Neural network workloads contain exactly that kind of repetitive arithmetic. Instead of a few large CPU cores doing general work, GPUs use many smaller cores to push through massive arrays of numbers efficiently."),
+            LessonSection(title: "Precision is a tradeoff", body: "Float32 stores more precision than Float16, but it also uses more memory and bandwidth. Smaller formats often run faster and let more model weights fit on a device. The tradeoff is that less precision can introduce rounding error, so engineers pick formats that are small enough to be fast but accurate enough to preserve model quality.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "Why are GPUs especially useful for neural networks?",
+            type: .multipleChoice(options: [
+                ChallengeOption(text: "They are better at storing text prompts in memory.", isCorrect: false, explanation: "Prompt storage is not the main reason."),
+                ChallengeOption(text: "They can run many similar multiply-add operations in parallel.", isCorrect: true, explanation: "Correct. Deep learning relies heavily on parallel numerical operations."),
+                ChallengeOption(text: "They remove the need for weights entirely.", isCorrect: false, explanation: "Hardware does not replace model parameters."),
+                ChallengeOption(text: "They always make models perfectly accurate.", isCorrect: false, explanation: "Faster hardware does not guarantee better predictions.")
+            ])
+        )
+    )
+
+    static let lessonTrainingToDeployment = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000004")!,
+        title: "From Training to Deployment",
+        summary: "What changes when a model stops learning and starts serving predictions.",
+        level: .intermediate,
+        sections: [
+            LessonSection(title: "Training produces weights", body: "Training repeatedly adjusts weights to reduce loss on data. By the end, the main artifact you keep is the learned parameter set. That is the expensive part of the process: searching for a useful arrangement of numbers."),
+            LessonSection(title: "Inference loads and runs", body: "Deployment means putting those learned weights somewhere useful, such as a phone, browser, server, or edge device. Running the model usually means loading weights into memory, preparing an input tensor, and executing forward passes to produce outputs."),
+            LessonSection(title: "Size matters", body: "Large models can be enormous because every parameter consumes storage. Quantization shrinks weights into smaller numeric formats so the model needs less memory and can often run faster. That is one of the main ways engineers make a trained model practical on limited hardware.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "Put these steps in the correct order:",
+            type: .ordering(
+                items: ["Run inference on new input", "Train the model", "Save learned weights", "Load weights onto a device"],
+                correctOrder: [1, 2, 3, 0]
+            )
+        )
+    )
+
+    static let lessonWhatNetworkLearned = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000005")!,
+        title: "What the Network Actually Learned",
+        summary: "How simple patterns become layered internal representations.",
+        level: .intermediate,
+        sections: [
+            LessonSection(title: "Layers build up features", body: "In many vision models, early layers respond to simple patterns such as edges, contrast changes, or basic textures. Later layers combine those lower-level signals into larger shapes or object parts. Deeper layers often represent more abstract combinations of earlier features."),
+            LessonSection(title: "Neurons respond to patterns", body: "A neuron does not usually store a perfect human-readable concept. Instead, it becomes sensitive to some pattern in the data. Researchers sometimes inspect which inputs maximize a neuron's activation to get hints about what kinds of features it reacts to."),
+            LessonSection(title: "Shortcut learning is real", body: "Networks can sometimes solve tasks for the wrong reason. If a wolf photo dataset often includes snow in the background, the model may learn to rely on snow more than the animal itself. That is why strong benchmark scores do not always mean a model truly learned the intended concept.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "A model classifies wolves mostly by the snowy background in many training photos. What is this an example of?",
+            type: .multipleChoice(options: [
+                ChallengeOption(text: "Good generalization from the true concept.", isCorrect: false, explanation: "The model is not using the intended concept."),
+                ChallengeOption(text: "Shortcut learning based on a spurious correlation.", isCorrect: true, explanation: "Correct. The model found an easy proxy instead of the real signal."),
+                ChallengeOption(text: "Quantization error during deployment.", isCorrect: false, explanation: "This is about learned behavior, not numeric compression."),
+                ChallengeOption(text: "Backpropagation failing to compute gradients.", isCorrect: false, explanation: "The issue is the data pattern the model exploited.")
+            ])
+        )
+    )
+
+    static let lessonLimitsOfNumbers = Lesson(
+        id: UUID(uuidString: "A0000002-0000-0000-0000-000000000006")!,
+        title: "The Limits of Numbers",
+        summary: "Why bigger models still have practical blind spots.",
+        level: .beginner,
+        sections: [
+            LessonSection(title: "Pattern matching is not everything", body: "Neural networks can become extremely good pattern matchers without being reliable reasoners. They may struggle with careful counting, unfamiliar combinations, or tasks that look different from their training data even when the underlying idea is simple for a person."),
+            LessonSection(title: "More parameters are not magic", body: "Adding parameters often increases capacity, but it does not guarantee understanding. A larger model may store more patterns, require more data, and cost more to run while still failing in cases that need abstraction, planning, or robust out-of-distribution behavior."),
+            LessonSection(title: "Generalization is the real goal", body: "Memorization means recalling seen examples. Generalization means applying learned structure to new examples. Practical machine learning is mostly about pushing models toward the second one while knowing they will never become perfect just by scaling numbers upward.")
+        ],
+        challenge: LessonChallenge(
+            prompt: "Which statement is the best takeaway?",
+            type: .multipleChoice(options: [
+                ChallengeOption(text: "If a model has more parameters, it will automatically reason better.", isCorrect: false, explanation: "Scale can help, but it does not guarantee robust reasoning."),
+                ChallengeOption(text: "Generalization matters more than memorizing training examples.", isCorrect: true, explanation: "Correct. Real-world usefulness depends on handling new cases well."),
+                ChallengeOption(text: "Neural networks fail only because GPUs are too slow.", isCorrect: false, explanation: "Many limits are conceptual, not just computational."),
+                ChallengeOption(text: "Once trained, a model can no longer make mistakes on novel inputs.", isCorrect: false, explanation: "Novel situations are often where models are most fragile.")
+            ])
+        )
+    )
 
     static let lessonNeuron = Lesson(
         id: UUID(uuidString: "A0000001-0000-0000-0000-000000000001")!,
@@ -411,7 +566,7 @@ enum SampleContent {
         case .architectures:
             [lessonFeedforward.id, lessonCNN.id, lessonTransformers.id, lessonOverfitting.id]
         case .realWorldAI:
-            [lessonTransformers.id, lessonCNN.id, lessonForwardPass.id, lessonNeuron.id]
+            [lessonNumbersInNumbersOut.id, lessonTrainingToDeployment.id, lessonWhatNetworkLearned.id, lessonTransformers.id]
         }
     }
 
@@ -422,7 +577,7 @@ enum SampleContent {
         case .mechanics:
             [lessonLoss.id, lessonGradientDescent.id, lessonBackprop.id, lessonLearningRate.id]
         case .applications:
-            [lessonTransformers.id, lessonCNN.id, lessonOverfitting.id, lessonFeedforward.id]
+            [lessonWeightsReally.id, lessonSignals.id, lessonNumbersInNumbersOut.id, lessonTrainingToDeployment.id]
         }
     }
 
