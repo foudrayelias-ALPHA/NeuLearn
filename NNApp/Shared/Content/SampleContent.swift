@@ -53,10 +53,10 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "Which statement is most accurate?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Weights are English rules hidden inside each neuron.", isCorrect: false, explanation: "Weights are not text instructions. They are numeric parameters."),
-                ChallengeOption(text: "Weights are learned floating-point values stored in arrays or matrices.", isCorrect: true, explanation: "Correct. That is the concrete representation used by neural networks."),
-                ChallengeOption(text: "Weights exist only while training and disappear during inference.", isCorrect: false, explanation: "Inference depends on the saved weights."),
-                ChallengeOption(text: "Weights are the same thing as the architecture.", isCorrect: false, explanation: "Architecture describes structure. Weights are the learned parameter values.")
+                ChallengeOption(text: "Each neuron stores readable English rules that describe what to detect.", isCorrect: false, explanation: "Weights are not text instructions. They are numeric parameters."),
+                ChallengeOption(text: "Weights exist only during training and vanish at inference time.", isCorrect: false, explanation: "Inference depends on the saved weights."),
+                ChallengeOption(text: "Weights are learned numeric values stored in arrays or matrices.", isCorrect: true, explanation: "Correct. That is the concrete representation used by neural networks."),
+                ChallengeOption(text: "Weights and architecture are two names for the same concept.", isCorrect: false, explanation: "Architecture describes structure. Weights are the learned parameter values.")
             ])
         )
     )
@@ -74,10 +74,10 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "Which description of a neural-network signal is best?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "A signal is a special kind of energy stored inside each layer.", isCorrect: false, explanation: "Signals are not a separate physical substance inside the model."),
-                ChallengeOption(text: "A signal is a numeric value passed forward and transformed by weights and activations.", isCorrect: true, explanation: "Correct. Signals are just values moving through the computation."),
-                ChallengeOption(text: "A signal is another name for the model's architecture.", isCorrect: false, explanation: "Architecture is the structure of the network, not the values flowing through it."),
-                ChallengeOption(text: "Signals only exist during training, not inference.", isCorrect: false, explanation: "Inference is also a forward pass, so signals still move through the network.")
+                ChallengeOption(text: "A signal is a form of energy that each layer stores internally.", isCorrect: false, explanation: "Signals are not a separate physical substance inside the model."),
+                ChallengeOption(text: "A signal is a numeric value passed forward and shaped by weights.", isCorrect: true, explanation: "Correct. Signals are just values moving through the computation."),
+                ChallengeOption(text: "A signal is just another term for the network's architecture.", isCorrect: false, explanation: "Architecture is the structure of the network, not the values flowing through it."),
+                ChallengeOption(text: "Signals appear only during training and vanish at inference.", isCorrect: false, explanation: "Inference is also a forward pass, so signals still move through the network.")
             ])
         )
     )
@@ -95,10 +95,10 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "If a classifier outputs [0.12 dog, 0.81 cat, 0.07 bird], what does the model predict?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Dog, because it appears first in the list.", isCorrect: false, explanation: "Order does not matter here. The largest score matters."),
-                ChallengeOption(text: "Cat, because that label has the highest output value.", isCorrect: true, explanation: "Correct. The prediction is the label attached to the highest score."),
-                ChallengeOption(text: "Bird, because small numbers are more confident.", isCorrect: false, explanation: "Confidence is not encoded by choosing the smallest score."),
-                ChallengeOption(text: "Nothing. Outputs are only used during training.", isCorrect: false, explanation: "Outputs are what inference produces at runtime.")
+                ChallengeOption(text: "Dog, because it appears first in the output list.", isCorrect: false, explanation: "Order does not matter here. The largest score matters."),
+                ChallengeOption(text: "Cat, because it has the highest output score.", isCorrect: true, explanation: "Correct. The prediction is the label attached to the highest score."),
+                ChallengeOption(text: "Bird, because smaller values mean more confidence.", isCorrect: false, explanation: "Confidence is not encoded by choosing the smallest score."),
+                ChallengeOption(text: "None of them — outputs only matter during training.", isCorrect: false, explanation: "Outputs are what inference produces at runtime.")
             ])
         )
     )
@@ -116,10 +116,10 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "Why are GPUs especially useful for neural networks?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "They are better at storing text prompts in memory.", isCorrect: false, explanation: "Prompt storage is not the main reason."),
-                ChallengeOption(text: "They can run many similar multiply-add operations in parallel.", isCorrect: true, explanation: "Correct. Deep learning relies heavily on parallel numerical operations."),
-                ChallengeOption(text: "They remove the need for weights entirely.", isCorrect: false, explanation: "Hardware does not replace model parameters."),
-                ChallengeOption(text: "They always make models perfectly accurate.", isCorrect: false, explanation: "Faster hardware does not guarantee better predictions.")
+                ChallengeOption(text: "They hold text prompts in memory more efficiently than CPUs.", isCorrect: false, explanation: "Prompt storage is not the main reason."),
+                ChallengeOption(text: "They eliminate the need for learnable weight parameters.", isCorrect: false, explanation: "Hardware does not replace model parameters."),
+                ChallengeOption(text: "They guarantee that any model will reach perfect accuracy.", isCorrect: false, explanation: "Faster hardware does not guarantee better predictions."),
+                ChallengeOption(text: "They run many multiply-add operations in parallel at once.", isCorrect: true, explanation: "Correct. Deep learning relies heavily on parallel numerical operations.")
             ])
         )
     )
@@ -156,10 +156,10 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "A model classifies wolves mostly by the snowy background in many training photos. What is this an example of?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Good generalization from the true concept.", isCorrect: false, explanation: "The model is not using the intended concept."),
-                ChallengeOption(text: "Shortcut learning based on a spurious correlation.", isCorrect: true, explanation: "Correct. The model found an easy proxy instead of the real signal."),
-                ChallengeOption(text: "Quantization error during deployment.", isCorrect: false, explanation: "This is about learned behavior, not numeric compression."),
-                ChallengeOption(text: "Backpropagation failing to compute gradients.", isCorrect: false, explanation: "The issue is the data pattern the model exploited.")
+                ChallengeOption(text: "Shortcut learning driven by a spurious correlation.", isCorrect: true, explanation: "Correct. The model found an easy proxy instead of the real signal."),
+                ChallengeOption(text: "Strong generalization from the intended concept.", isCorrect: false, explanation: "The model is not using the intended concept."),
+                ChallengeOption(text: "A quantization artifact introduced at deployment.", isCorrect: false, explanation: "This is about learned behavior, not numeric compression."),
+                ChallengeOption(text: "A failure in backpropagation gradient computation.", isCorrect: false, explanation: "The issue is the data pattern the model exploited.")
             ])
         )
     )
@@ -178,8 +178,8 @@ enum SampleContent {
             prompt: "Which statement is the best takeaway?",
             type: .multipleChoice(options: [
                 ChallengeOption(text: "If a model has more parameters, it will automatically reason better.", isCorrect: false, explanation: "Scale can help, but it does not guarantee robust reasoning."),
-                ChallengeOption(text: "Generalization matters more than memorizing training examples.", isCorrect: true, explanation: "Correct. Real-world usefulness depends on handling new cases well."),
                 ChallengeOption(text: "Neural networks fail only because GPUs are too slow.", isCorrect: false, explanation: "Many limits are conceptual, not just computational."),
+                ChallengeOption(text: "Generalization matters more than memorizing training examples.", isCorrect: true, explanation: "Correct. Real-world usefulness depends on handling new cases well."),
                 ChallengeOption(text: "Once trained, a model can no longer make mistakes on novel inputs.", isCorrect: false, explanation: "Novel situations are often where models are most fragile.")
             ])
         )
@@ -215,9 +215,9 @@ enum SampleContent {
             prompt: "What does a negative weight do to an input signal?",
             type: .multipleChoice(options: [
                 ChallengeOption(text: "Amplifies the input and makes the signal stronger overall", isCorrect: false, explanation: "A positive weight amplifies. A negative weight inverts the signal."),
-                ChallengeOption(text: "Reverses the input's direction", isCorrect: true, explanation: "Correct! A negative weight flips the effect: positive inputs push the output down, and vice versa."),
                 ChallengeOption(text: "Zeroes out the input so the neuron ignores it entirely", isCorrect: false, explanation: "A weight of exactly zero would ignore the input. Negative weights still pass information, just inverted."),
                 ChallengeOption(text: "Has no effect on the output", isCorrect: false, explanation: "Every non-zero weight affects the output. Negative weights invert the signal direction."),
+                ChallengeOption(text: "Reverses the input's direction", isCorrect: true, explanation: "Correct! A negative weight flips the effect: positive inputs push the output down, and vice versa."),
             ])
         )
     )
@@ -235,8 +235,8 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "A network uses only linear functions (no activation). You stack 100 layers. What can it learn?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Complex curves and patterns, since more layers means more power", isCorrect: false, explanation: "Without non-linearity, stacking layers is like multiplying matrices. It always collapses to a single linear transformation, no matter how deep."),
                 ChallengeOption(text: "Only straight-line relationships", isCorrect: true, explanation: "Correct! Without activation functions, any number of stacked linear layers is mathematically equivalent to a single linear layer. That's why non-linearity is essential."),
+                ChallengeOption(text: "Complex curves and patterns, since more layers means more power", isCorrect: false, explanation: "Without non-linearity, stacking layers is like multiplying matrices. It always collapses to a single linear transformation, no matter how deep."),
                 ChallengeOption(text: "Nothing at all, because the network can't even run without activation functions", isCorrect: false, explanation: "The network can still compute, it just can't learn anything beyond linear relationships. Activation functions unlock complexity, they don't enable computation."),
                 ChallengeOption(text: "It depends on how many neurons each layer has", isCorrect: false, explanation: "Width doesn't help either. More neurons in a linear layer still produce a linear output. Non-linearity is the missing ingredient."),
             ])
@@ -259,8 +259,8 @@ enum SampleContent {
             prompt: "In a forward pass, which direction does data flow?",
             type: .multipleChoice(options: [
                 ChallengeOption(text: "Output to input, since the network needs to check its answer first", isCorrect: false, explanation: "Backward flow is backpropagation, used during training to compute gradients."),
-                ChallengeOption(text: "Input to output, one layer at a time", isCorrect: true, explanation: "Correct! The forward pass computes outputs layer by layer from input to output."),
                 ChallengeOption(text: "All layers compute simultaneously in parallel", isCorrect: false, explanation: "Each layer depends on the previous layer's output, so they must compute in sequence."),
+                ChallengeOption(text: "Input to output, one layer at a time", isCorrect: true, explanation: "Correct! The forward pass computes outputs layer by layer from input to output."),
                 ChallengeOption(text: "Randomly between layers depending on the architecture", isCorrect: false, explanation: "The forward pass is strictly ordered: input layer first, output layer last."),
             ])
         )
@@ -359,9 +359,9 @@ enum SampleContent {
             prompt: "What happens when the learning rate is too high?",
             type: .multipleChoice(options: [
                 ChallengeOption(text: "Training is very slow but the model stays stable and converges", isCorrect: false, explanation: "That describes a learning rate that is too LOW, not too high."),
-                ChallengeOption(text: "The loss overshoots and may diverge", isCorrect: true, explanation: "Correct! A high learning rate causes the weights to jump too far on each step, overshooting the minimum and potentially making the loss increase instead of decrease."),
                 ChallengeOption(text: "The model underfits because it can't hold onto patterns", isCorrect: false, explanation: "Underfitting is about model capacity, not learning rate. A high rate causes instability."),
                 ChallengeOption(text: "Nothing, because modern optimizers handle any learning rate automatically", isCorrect: false, explanation: "Even adaptive optimizers have a base learning rate that can cause divergence if set too high."),
+                ChallengeOption(text: "The loss overshoots and may diverge", isCorrect: true, explanation: "Correct! A high learning rate causes the weights to jump too far on each step, overshooting the minimum and potentially making the loss increase instead of decrease."),
             ])
         )
     )
@@ -379,8 +379,8 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "Why can't a feedforward network process a time series as well as a recurrent network?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "It can't handle numerical inputs, only categorical features", isCorrect: false, explanation: "Feedforward networks handle numerical inputs just fine. The issue is about temporal relationships."),
                 ChallengeOption(text: "It has no memory of previous inputs", isCorrect: true, explanation: "Correct! Feedforward networks treat every input as isolated. They have no mechanism to remember or relate to previous time steps."),
+                ChallengeOption(text: "It can't handle numerical inputs, only categorical features", isCorrect: false, explanation: "Feedforward networks handle numerical inputs just fine. The issue is about temporal relationships."),
                 ChallengeOption(text: "They can only do classification, not regression on sequences", isCorrect: false, explanation: "Feedforward networks can do both classification and regression."),
                 ChallengeOption(text: "They're too slow to keep up with real-time sequential data", isCorrect: false, explanation: "Speed isn't the issue. It's the lack of temporal awareness."),
             ])
@@ -420,9 +420,9 @@ enum SampleContent {
             prompt: "What is the main advantage of attention over processing sequences one element at a time?",
             type: .multipleChoice(options: [
                 ChallengeOption(text: "It uses fewer parameters so the model trains faster overall", isCorrect: false, explanation: "Transformers typically use MORE parameters. Their advantage is in how they process relationships."),
-                ChallengeOption(text: "It captures long-range relationships directly", isCorrect: true, explanation: "Correct! Attention lets every element directly interact with every other element, regardless of distance, and processes them simultaneously."),
                 ChallengeOption(text: "It doesn't need training data because attention is unsupervised", isCorrect: false, explanation: "All neural network architectures need training data. Attention is about how the model processes its inputs."),
                 ChallengeOption(text: "It only works with text, which makes it very specialized for language", isCorrect: false, explanation: "Transformers work with images, audio, protein sequences, and more, not just text."),
+                ChallengeOption(text: "It captures long-range relationships directly", isCorrect: true, explanation: "Correct! Attention lets every element directly interact with every other element, regardless of distance, and processes them simultaneously."),
             ])
         )
     )
@@ -1236,183 +1236,340 @@ enum SampleContent {
         }
 
         func challenge(for node: TopicTreeNode) -> LessonChallenge {
-            LessonChallenge(
-                prompt: "Which statement best describes \(node.label)?",
-                type: .multipleChoice(options: [
-                    ChallengeOption(text: correctStatement(for: node), isCorrect: true, explanation: "Correct. \(node.summary)"),
-                    ChallengeOption(text: distractors[0], isCorrect: false, explanation: "That describes a different family of methods, not \(node.label)."),
-                    ChallengeOption(text: distractors[1], isCorrect: false, explanation: "That mixes up the role of \(node.label) with another part of the pipeline."),
-                    ChallengeOption(text: distractors[2], isCorrect: false, explanation: "That would point you toward the wrong mental model for \(node.label)."),
-                ])
+            let prompts = [
+                "Which statement best describes \(node.label)?",
+                "What is the main role of \(node.label)?",
+                "How would you best summarize \(node.label)?",
+                "Which of these is true about \(node.label)?",
+            ]
+            let hash = Self.stableHash(for: node.label)
+            let promptIndex = hash % prompts.count
+            let correctPosition = (hash / prompts.count) % 4
+
+            let correct = ChallengeOption(
+                text: Self.uniqueCorrectStatement(for: node.label, category: self, summary: node.summary),
+                isCorrect: true,
+                explanation: "Correct. \(node.summary)"
+            )
+            let pool = distractorPool
+            let start = hash % pool.count
+            let picked = (0..<3).map { i in
+                let idx = (start + i) % pool.count
+                return ChallengeOption(
+                    text: pool[idx].text,
+                    isCorrect: false,
+                    explanation: pool[idx].explanation(node.label)
+                )
+            }
+
+            var options = picked
+            options.insert(correct, at: min(correctPosition, options.count))
+
+            return LessonChallenge(
+                prompt: prompts[promptIndex],
+                type: .multipleChoice(options: options)
             )
         }
 
-        private func correctStatement(for node: TopicTreeNode) -> String {
-            switch self {
-            case .regression:
-                return "It predicts a continuous value from input features."
-            case .classification:
-                return "It separates inputs into discrete classes or labels."
-            case .clustering:
-                return "It groups unlabeled examples by similarity."
-            case .dimensionalityReduction:
-                return "It compresses high-dimensional data while trying to preserve important structure."
-            case .anomalyDetection:
-                return "It flags data points that look unusually different from normal patterns."
-            case .reinforcementLearning:
-                return "It improves behavior from reward signals collected over sequences of actions."
-            case .ensemble:
-                return "It combines multiple models to improve stability or accuracy."
-            case .optimization:
-                return "It changes how gradient-based updates are applied during training."
-            case .regularization:
-                return "It helps a model generalize instead of memorizing the training set."
-            case .sequenceModels:
-                return "It models ordered data by carrying context across time steps."
-            case .generativeModels:
-                return "It learns a data distribution well enough to produce new samples."
-            case .graphLearning:
-                return "It learns from nodes and their relationships in a graph."
-            case .languageRepresentation:
-                return "It turns text into vector representations a model can learn from."
-            case .largeLanguageModels:
-                return "It controls how a large language model is trained, adapted, or grounded."
-            case .languageTasks:
-                return "It uses text representations to solve a specific language task."
-            case .visionTasks:
-                return "It extracts structure or generation targets from images or video."
-            case .ethicsAndSafety:
-                return "It addresses reliability, fairness, privacy, or alignment in AI systems."
-            case .dataPipeline:
-                return "It prepares data so the model can train and be evaluated more reliably."
-            case .evaluation:
-                return "It measures model performance with task-relevant metrics."
-            case .general:
-                return node.summary
+        private static func stableHash(for label: String) -> Int {
+            var h: UInt64 = 0x811C9DC5
+            for byte in label.utf8 {
+                h = (h ^ UInt64(byte)) &* 0x01000193
             }
+            return Int(h % 1_000_000)
         }
 
-        private var distractors: [String] {
+        // swiftlint:disable cyclomatic_complexity function_body_length
+        private static func uniqueCorrectStatement(for label: String, category: ExploreLessonCategory, summary: String) -> String {
+            switch label {
+            // Regression
+            case "Linear Regression": return "It fits a straight line to data by minimizing squared errors."
+            case "Polynomial Regression": return "It fits higher-degree curves to capture non-linear trends."
+            case "Ridge & Lasso": return "They add penalty terms to shrink weights and reduce overfitting."
+            // Classification
+            case "Logistic Regression": return "It models binary outcome probability with a sigmoid function."
+            case "Decision Trees": return "They split data through a sequence of learned yes-or-no rules."
+            case "Random Forests": return "They average many trees trained on random data subsets."
+            case "Support Vector Machines": return "They find the widest-margin boundary separating two classes."
+            case "k-Nearest Neighbors": return "It classifies by majority vote among the closest neighbors."
+            case "Naive Bayes": return "It uses Bayes' theorem with independence assumptions to classify."
+            // Clustering
+            case "K-Means": return "It assigns points to the nearest centroid until clusters stabilize."
+            case "DBSCAN": return "It grows clusters from dense regions and marks sparse points as noise."
+            case "Hierarchical Clustering": return "It builds a tree of clusters by merging or splitting groups."
+            case "Gaussian Mixtures": return "It models data as a blend of several Gaussian distributions."
+            // Dimensionality Reduction
+            case "PCA": return "It projects data onto directions that capture the most variance."
+            case "t-SNE": return "It maps high-dimensional data to 2D preserving local distances."
+            case "UMAP": return "It builds a fast embedding preserving local and global structure."
+            // Anomaly Detection
+            case "Isolation Forest": return "It isolates outliers by measuring how few random splits are needed."
+            case "Autoencoders for Anomalies": return "It flags points whose reconstruction error is unusually high."
+            // Reinforcement Learning
+            case "Markov Decision Processes": return "It formalizes states, actions, transitions, and rewards."
+            case "Q-Learning": return "It learns expected future reward for each state-action pair."
+            case "Policy Gradient": return "It optimizes the policy by following the reward gradient directly."
+            case "Actor-Critic": return "It pairs a policy network with a value estimator for stability."
+            case "Multi-Agent RL": return "Multiple agents learn strategies simultaneously in one environment."
+            // Ensemble
+            case "Bagging": return "It trains models on random subsets and averages their outputs."
+            case "Boosting": return "It trains models in sequence, each fixing prior mistakes."
+            case "XGBoost": return "It applies optimized gradient boosting with regularization."
+            case "Stacking": return "It trains a meta-model to combine several base learner outputs."
+            // Optimization
+            case "SGD & Momentum": return "It adds velocity to gradient updates for faster convergence."
+            case "Adam": return "It adapts each parameter's learning rate using gradient moments."
+            case "AdaGrad & RMSProp": return "They scale updates by accumulated historical gradient magnitudes."
+            case "Learning Rate Schedules": return "They reduce or cycle the learning rate as training progresses."
+            // Regularization
+            case "Dropout": return "It randomly disables neurons so the network avoids fixed paths."
+            case "L1 & L2 Penalties": return "They penalize large weights to encourage simpler solutions."
+            case "Batch Normalization": return "It normalizes layer inputs per mini-batch to stabilize training."
+            case "Data Augmentation": return "It applies random transforms to expand the training set."
+            case "Early Stopping": return "It halts training when validation performance stops improving."
+            // Sequence Models
+            case "Vanilla RNNs": return "They pass hidden state forward to give the network memory."
+            case "LSTMs": return "They use gates to control which information persists over time."
+            case "GRUs": return "They simplify gating to achieve memory with fewer parameters."
+            // Generative Models
+            case "GANs": return "A generator and discriminator compete to produce realistic data."
+            case "VAEs": return "They encode data into a latent space and decode new samples."
+            case "Diffusion Models": return "They reverse a gradual noise process to generate clean data."
+            case "Flow Models": return "They use invertible transforms to map data to a simple distribution."
+            // Graph Learning
+            case "Message Passing": return "Nodes aggregate neighbor information along edges to update state."
+            case "Graph Attention": return "It weighs each neighbor's message with learned attention scores."
+            // Language Representation
+            case "Tokenization": return "It splits raw text into discrete tokens a model can process."
+            case "Word2Vec": return "It trains a shallow network to learn dense word vectors."
+            case "GloVe": return "It derives word vectors from global co-occurrence statistics."
+            case "Contextual Embeddings": return "They produce word vectors that shift based on surrounding context."
+            // Large Language Models
+            case "Pre-training": return "It trains on massive text with self-supervised objectives first."
+            case "Instruction Tuning": return "It fine-tunes on prompt-response pairs to follow instructions."
+            case "Prompt Engineering": return "It steers model behavior through input text design alone."
+            case "Context Windows": return "It sets the maximum text span a model can attend to at once."
+            case "Retrieval-Augmented Generation": return "It grounds responses in documents retrieved at inference time."
+            case "RLHF": return "It aligns outputs with human preferences via a reward model."
+            // Language Tasks
+            case "Sentiment Analysis": return "It classifies text by emotional tone: positive, negative, or neutral."
+            case "Machine Translation": return "It converts text from one natural language into another."
+            case "Named Entity Recognition": return "It identifies and labels people, places, and organizations in text."
+            // Vision Tasks
+            case "Image Classification": return "It assigns a single category label to an entire image."
+            case "Object Detection": return "It locates objects in an image with bounding boxes and labels."
+            case "Semantic Segmentation": return "It labels every pixel in an image with a semantic class."
+            case "Image Generation": return "It creates new images from noise, text, or other signals."
+            case "Pose Estimation": return "It detects body keypoints and skeletal structure in images."
+            case "Optical Flow": return "It tracks per-pixel motion between consecutive video frames."
+            case "Action Recognition": return "It classifies what activity is being performed in a video."
+            case "Video Captioning": return "It generates natural language descriptions of video content."
+            // Ethics & Safety
+            case "Bias & Fairness": return "It identifies and mitigates systematic unfairness in AI outputs."
+            case "Interpretability": return "It explains why a model made a particular prediction."
+            case "AI Alignment": return "It ensures AI systems pursue goals matching human values."
+            case "Privacy & Data": return "It protects sensitive information throughout the AI pipeline."
+            case "Adversarial Robustness": return "It defends models against inputs crafted to cause errors."
+            // Data Pipeline
+            case "Data Cleaning": return "It fixes missing values, duplicates, and inconsistencies in data."
+            case "Feature Scaling": return "It normalizes features so no single one dominates by scale."
+            case "Feature Selection": return "It picks the most informative features and drops the noisy ones."
+            case "Encoding Categorical Data": return "It converts category labels into numbers a model can use."
+            case "Train/Val/Test Splits": return "It partitions data so performance is evaluated on unseen examples."
+            case "Cross-Validation": return "It rotates through folds for more robust performance estimates."
+            // Evaluation
+            case "Accuracy, Precision, Recall": return "They measure different aspects of classification correctness."
+            case "F1 Score": return "It combines precision and recall into one balanced number."
+            case "ROC & AUC": return "They measure classifier quality across all decision thresholds."
+            case "Confusion Matrix": return "It tallies predictions versus truth to show where errors land."
+            case "MSE, MAE, R-squared": return "They quantify regression error and explained target variance."
+            case "Perplexity & BLEU": return "They score language model quality and translation overlap."
+            default: return summary
+            }
+        }
+        // swiftlint:enable cyclomatic_complexity function_body_length
+
+        private var distractorPool: [(text: String, explanation: (String) -> String)] {
             switch self {
             case .regression:
                 return [
-                    "It discovers clusters in unlabeled data without using targets.",
-                    "It computes a token-by-token representation for language models.",
-                    "It measures model performance after training is complete.",
+                    (text: "It discovers clusters in unlabeled data without using targets.", explanation: { "Clustering is unsupervised grouping, not \($0)." }),
+                    (text: "It computes a token-by-token representation for language models.", explanation: { "Token representations are a language task, not \($0)." }),
+                    (text: "It measures model performance after training is complete.", explanation: { "That describes evaluation metrics, not \($0)." }),
+                    (text: "It assigns inputs to one of several discrete class labels.", explanation: { "Discrete labels are classification, not \($0)." }),
+                    (text: "It generates new images by reversing a noise process.", explanation: { "Image generation is a generative model task, not \($0)." }),
+                    (text: "It carries hidden state across time steps in sequential data.", explanation: { "Hidden state over time is a sequence model concept, not \($0)." }),
                 ]
             case .classification:
                 return [
-                    "It compresses many dimensions into a smaller embedding space.",
-                    "It creates new synthetic samples from a learned distribution.",
-                    "It chooses a train/validation/test split for fair evaluation.",
+                    (text: "It compresses many dimensions into a smaller embedding space.", explanation: { "Dimensionality reduction compresses features, not \($0)." }),
+                    (text: "It creates new synthetic samples from a learned distribution.", explanation: { "Sample generation is a generative model task, not \($0)." }),
+                    (text: "It chooses a train/validation/test split for fair evaluation.", explanation: { "Data splitting is part of the data pipeline, not \($0)." }),
+                    (text: "It predicts a continuous numeric value from input features.", explanation: { "Continuous prediction is regression, not \($0)." }),
+                    (text: "It adjusts learning rates per parameter during training.", explanation: { "Adaptive learning rates are optimizers, not \($0)." }),
+                    (text: "It detects unusual data points that deviate from normal patterns.", explanation: { "Outlier detection is anomaly detection, not \($0)." }),
                 ]
             case .clustering:
                 return [
-                    "It predicts an exact numeric target for each example.",
-                    "It updates neural network weights using adaptive gradients.",
-                    "It translates text from one language to another.",
+                    (text: "It predicts an exact numeric target for each example.", explanation: { "Numeric prediction is regression, not \($0)." }),
+                    (text: "It updates neural network weights using adaptive gradients.", explanation: { "Adaptive gradient updates are optimizers, not \($0)." }),
+                    (text: "It translates text from one natural language to another.", explanation: { "Language translation is an NLP task, not \($0)." }),
+                    (text: "It assigns class labels using learned decision boundaries.", explanation: { "Decision boundaries are classification, not \($0)." }),
+                    (text: "It normalizes feature values before the first training step.", explanation: { "Feature normalization is a data pipeline step, not \($0)." }),
+                    (text: "It generates realistic images from a latent noise vector.", explanation: { "Image generation is a generative model task, not \($0)." }),
                 ]
             case .dimensionalityReduction:
                 return [
-                    "It assigns every example to a predefined class label.",
-                    "It learns by maximizing long-term reward from actions.",
-                    "It detects bounding boxes and masks in images.",
+                    (text: "It assigns every example to a predefined class label.", explanation: { "Class assignment is classification, not \($0)." }),
+                    (text: "It learns by maximizing long-term reward from actions.", explanation: { "Reward maximization is reinforcement learning, not \($0)." }),
+                    (text: "It detects bounding boxes and segmentation masks in images.", explanation: { "Bounding box detection is a vision task, not \($0)." }),
+                    (text: "It splits raw text into subword tokens for embedding.", explanation: { "Tokenization is a language representation step, not \($0)." }),
+                    (text: "It averages predictions from many independently trained models.", explanation: { "Model averaging is an ensemble method, not \($0)." }),
+                    (text: "It removes duplicates and fixes missing values in a dataset.", explanation: { "Data cleaning is a pipeline step, not \($0)." }),
                 ]
             case .anomalyDetection:
                 return [
-                    "It improves a model by averaging many decision trees.",
-                    "It turns text into subword tokens for a language model.",
-                    "It estimates performance using precision and recall.",
+                    (text: "It improves a model by averaging many decision trees.", explanation: { "Averaging decision trees is an ensemble method, not \($0)." }),
+                    (text: "It turns text into subword tokens for a language model.", explanation: { "Subword tokenization is a language representation step, not \($0)." }),
+                    (text: "It estimates performance using precision and recall.", explanation: { "Precision and recall are evaluation metrics, not \($0)." }),
+                    (text: "It predicts a continuous value by fitting a curve to data.", explanation: { "Curve fitting is regression, not \($0)." }),
+                    (text: "It assigns each example to the nearest cluster centroid.", explanation: { "Centroid assignment is a clustering algorithm, not \($0)." }),
+                    (text: "It generates new data samples from a learned latent space.", explanation: { "Sample generation is a generative model, not \($0)." }),
                 ]
             case .reinforcementLearning:
                 return [
-                    "It predicts labels from static examples with no notion of time.",
-                    "It regularizes a model by penalizing large weights.",
-                    "It groups similar points into clusters without rewards.",
+                    (text: "It predicts labels from static examples with no notion of time.", explanation: { "Static label prediction is supervised classification, not \($0)." }),
+                    (text: "It regularizes a model by penalizing large weights.", explanation: { "Weight penalties are regularization, not \($0)." }),
+                    (text: "It groups similar points into clusters without rewards.", explanation: { "Reward-free grouping is clustering, not \($0)." }),
+                    (text: "It compresses features into fewer dimensions for visualization.", explanation: { "Feature compression is dimensionality reduction, not \($0)." }),
+                    (text: "It converts category names into numeric encodings.", explanation: { "Category encoding is a data pipeline step, not \($0)." }),
+                    (text: "It measures how far a prediction is from the correct answer.", explanation: { "Error measurement is a loss or evaluation concept, not \($0)." }),
                 ]
             case .ensemble:
                 return [
-                    "It carries hidden state across time steps in a sequence.",
-                    "It removes noise from images by reversing a diffusion process.",
-                    "It calibrates the scale of raw numerical features before training.",
+                    (text: "It carries hidden state across time steps in a sequence.", explanation: { "Hidden state over time is a sequence model, not \($0)." }),
+                    (text: "It removes noise from images by reversing a diffusion process.", explanation: { "Noise reversal is a diffusion model concept, not \($0)." }),
+                    (text: "It calibrates the scale of raw numerical features before training.", explanation: { "Feature scaling is a data pipeline step, not \($0)." }),
+                    (text: "It identifies and labels named entities like people and places.", explanation: { "Entity labeling is an NLP task, not \($0)." }),
+                    (text: "It detects unusual examples that differ from normal data.", explanation: { "Outlier detection is anomaly detection, not \($0)." }),
+                    (text: "It projects high-dimensional data onto a 2D plane.", explanation: { "2D projection is dimensionality reduction, not \($0)." }),
                 ]
             case .optimization:
                 return [
-                    "It detects whether a training sample is an outlier.",
-                    "It uses privacy constraints to protect sensitive user data.",
-                    "It maps confusion counts into an evaluation table after inference.",
+                    (text: "It detects whether a training sample is an outlier.", explanation: { "Outlier detection is anomaly detection, not \($0)." }),
+                    (text: "It uses privacy constraints to protect sensitive user data.", explanation: { "Privacy constraints are an ethics and safety concern, not \($0)." }),
+                    (text: "It maps confusion counts into an evaluation table after inference.", explanation: { "Confusion tables are an evaluation tool, not \($0)." }),
+                    (text: "It randomly drops neurons to prevent overfitting.", explanation: { "Dropping neurons is dropout regularization, not \($0)." }),
+                    (text: "It classifies images by assigning a label to each pixel.", explanation: { "Pixel labeling is semantic segmentation, not \($0)." }),
+                    (text: "It trains a generator and discriminator against each other.", explanation: { "Adversarial training is a GAN concept, not \($0)." }),
                 ]
             case .regularization:
                 return [
-                    "It predicts the next token in a prompt by retrieval alone.",
-                    "It finds the nearest labeled points and votes on a class.",
-                    "It reduces a dataset to two dimensions for visualization only.",
+                    (text: "It predicts the next token in a prompt by retrieval alone.", explanation: { "Retrieval-based prediction is RAG, not \($0)." }),
+                    (text: "It finds the nearest labeled points and votes on a class.", explanation: { "Neighbor voting is k-NN classification, not \($0)." }),
+                    (text: "It reduces a dataset to two dimensions for visualization only.", explanation: { "2D reduction is dimensionality reduction, not \($0)." }),
+                    (text: "It learns a reward function from human preference data.", explanation: { "Reward learning from preferences is RLHF, not \($0)." }),
+                    (text: "It estimates translation quality by comparing to reference text.", explanation: { "Translation scoring is an evaluation metric, not \($0)." }),
+                    (text: "It grows clusters outward from dense regions in feature space.", explanation: { "Density-based grouping is a clustering method, not \($0)." }),
                 ]
             case .sequenceModels:
                 return [
-                    "It treats every frame or token as fully independent with no context.",
-                    "It merges many separate models into a single ensemble output.",
-                    "It scores model quality with a post-training metric.",
+                    (text: "It treats every frame or token as fully independent with no context.", explanation: { "Independent processing is feedforward, the opposite of \($0)." }),
+                    (text: "It merges many separate models into a single ensemble output.", explanation: { "Model merging is an ensemble method, not \($0)." }),
+                    (text: "It scores model quality with a post-training metric.", explanation: { "Post-training scoring is evaluation, not \($0)." }),
+                    (text: "It assigns each input to one of several discrete categories.", explanation: { "Category assignment is classification, not \($0)." }),
+                    (text: "It projects data onto principal components to reduce dimensions.", explanation: { "Principal components are PCA, not \($0)." }),
+                    (text: "It identifies the widest-margin hyperplane between two classes.", explanation: { "Margin optimization is an SVM concept, not \($0)." }),
                 ]
             case .generativeModels:
                 return [
-                    "It only chooses among a fixed set of class labels.",
-                    "It identifies unfair bias and policy risk in deployed systems.",
-                    "It normalizes features before the first training step.",
+                    (text: "It only chooses among a fixed set of class labels.", explanation: { "Fixed-label prediction is classification, not \($0)." }),
+                    (text: "It identifies unfair bias and policy risk in deployed systems.", explanation: { "Bias auditing is an ethics concern, not \($0)." }),
+                    (text: "It normalizes features before the first training step.", explanation: { "Feature normalization is a data pipeline step, not \($0)." }),
+                    (text: "It locates objects in images and draws bounding boxes around them.", explanation: { "Bounding box prediction is object detection, not \($0)." }),
+                    (text: "It carries context forward in a recurrent hidden state.", explanation: { "Recurrent hidden state is an RNN concept, not \($0)." }),
+                    (text: "It fits a regression line through continuous target data.", explanation: { "Line fitting is regression, not \($0)." }),
                 ]
             case .graphLearning:
                 return [
-                    "It removes mislabeled rows and missing values from a dataset.",
-                    "It learns solely from reward signals in an environment.",
-                    "It compares false positives and false negatives with a metric.",
+                    (text: "It removes mislabeled rows and missing values from a dataset.", explanation: { "Row cleaning is a data pipeline step, not \($0)." }),
+                    (text: "It learns solely from reward signals in an environment.", explanation: { "Reward-driven learning is reinforcement learning, not \($0)." }),
+                    (text: "It compares false positives and false negatives with a metric.", explanation: { "Error comparison is evaluation, not \($0)." }),
+                    (text: "It generates photorealistic images from random noise.", explanation: { "Image generation is a generative model task, not \($0)." }),
+                    (text: "It splits text into subword units before embedding.", explanation: { "Subword splitting is tokenization, not \($0)." }),
                 ]
             case .languageRepresentation:
                 return [
-                    "It detects motion vectors between consecutive video frames.",
-                    "It adds stochastic depth to prevent overfitting in CNNs.",
-                    "It isolates rare anomalies by partitioning feature space.",
+                    (text: "It detects motion vectors between consecutive video frames.", explanation: { "Motion detection is optical flow, not \($0)." }),
+                    (text: "It adds stochastic depth to prevent overfitting in CNNs.", explanation: { "Stochastic depth is a regularization method, not \($0)." }),
+                    (text: "It isolates rare anomalies by partitioning feature space.", explanation: { "Anomaly isolation is anomaly detection, not \($0)." }),
+                    (text: "It optimizes an agent's policy using cumulative reward signals.", explanation: { "Policy optimization is reinforcement learning, not \($0)." }),
+                    (text: "It trains models on random subsets and averages their outputs.", explanation: { "Subset averaging is bagging, not \($0)." }),
+                    (text: "It draws bounding boxes around detected objects in images.", explanation: { "Bounding boxes are an object detection output, not \($0)." }),
                 ]
             case .largeLanguageModels:
                 return [
-                    "It clusters unlabeled examples based on Euclidean distance.",
-                    "It chooses feature subsets before any model sees the data.",
-                    "It estimates a regression target as a continuous number.",
+                    (text: "It clusters unlabeled examples based on Euclidean distance.", explanation: { "Distance-based clustering is unsupervised learning, not \($0)." }),
+                    (text: "It chooses feature subsets before any model sees the data.", explanation: { "Feature selection is a data pipeline step, not \($0)." }),
+                    (text: "It estimates a regression target as a continuous number.", explanation: { "Continuous estimation is regression, not \($0)." }),
+                    (text: "It labels every pixel of an image with a semantic class.", explanation: { "Pixel labeling is semantic segmentation, not \($0)." }),
+                    (text: "It builds a tree hierarchy of merging data clusters.", explanation: { "Hierarchical merging is a clustering technique, not \($0)." }),
+                    (text: "It computes the harmonic mean of precision and recall.", explanation: { "The F1 score is an evaluation metric, not \($0)." }),
                 ]
             case .languageTasks:
                 return [
-                    "It updates weights with momentum after gradients are computed.",
-                    "It uses graph neighborhoods to update node embeddings.",
-                    "It stabilizes training by normalizing hidden activations only.",
+                    (text: "It updates weights with momentum after gradients are computed.", explanation: { "Momentum updates are an optimizer feature, not \($0)." }),
+                    (text: "It uses graph neighborhoods to update node embeddings.", explanation: { "Graph message passing is graph learning, not \($0)." }),
+                    (text: "It stabilizes training by normalizing hidden activations.", explanation: { "Activation normalization is batch normalization, not \($0)." }),
+                    (text: "It generates new data samples by decoding from a latent space.", explanation: { "Latent decoding is a generative model concept, not \($0)." }),
+                    (text: "It measures how many splits isolate an unusual data point.", explanation: { "Split-based isolation is anomaly detection, not \($0)." }),
+                    (text: "It partitions data into k groups by centroid distance.", explanation: { "Centroid-based partitioning is K-Means clustering, not \($0)." }),
                 ]
             case .visionTasks:
                 return [
-                    "It ranks translation quality or language fit with a text metric.",
-                    "It builds fairness audits and alignment constraints for deployment.",
-                    "It decides how to split a dataset into train and validation folds.",
+                    (text: "It ranks translation quality or language fit with a text metric.", explanation: { "Text quality metrics are NLP evaluation, not \($0)." }),
+                    (text: "It builds fairness audits and alignment constraints for deployment.", explanation: { "Fairness auditing is an ethics task, not \($0)." }),
+                    (text: "It decides how to split a dataset into train and validation folds.", explanation: { "Data splitting is a pipeline step, not \($0)." }),
+                    (text: "It adapts the learning rate differently for each weight.", explanation: { "Per-weight learning rates are an optimizer feature, not \($0)." }),
+                    (text: "It passes hidden state forward through a recurrent cell.", explanation: { "Recurrent hidden state is a sequence model concept, not \($0)." }),
+                    (text: "It encodes category strings as integer or one-hot vectors.", explanation: { "Category encoding is a data pipeline step, not \($0)." }),
+                    (text: "It penalizes large weight values to encourage simpler models.", explanation: { "Weight penalties are regularization, not \($0)." }),
+                    (text: "It fits polynomial curves through continuous target values.", explanation: { "Curve fitting is regression, not \($0)." }),
                 ]
             case .ethicsAndSafety:
                 return [
-                    "It predicts the next token by carrying an RNN hidden state.",
-                    "It estimates numeric targets with a linear or curved function.",
-                    "It groups points into clusters based on geometric similarity.",
+                    (text: "It predicts the next token by carrying an RNN hidden state.", explanation: { "Hidden state prediction is a sequence model concept, not \($0)." }),
+                    (text: "It estimates numeric targets with a linear or curved function.", explanation: { "Numeric estimation is regression, not \($0)." }),
+                    (text: "It groups points into clusters based on geometric similarity.", explanation: { "Geometric grouping is clustering, not \($0)." }),
+                    (text: "It compresses data into a 2D visualization of neighborhoods.", explanation: { "2D neighborhood mapping is dimensionality reduction, not \($0)." }),
+                    (text: "It trains a meta-model on top of multiple base learners.", explanation: { "Meta-learning is an ensemble method, not \($0)." }),
+                    (text: "It converts raw pixels into class-specific bounding boxes.", explanation: { "Bounding box prediction is object detection, not \($0)." }),
                 ]
             case .dataPipeline:
                 return [
-                    "It combines many weak models into a single stronger ensemble.",
-                    "It models ordered dependencies in a sequence with memory.",
-                    "It generates entirely new samples from a latent distribution.",
+                    (text: "It combines many weak models into a single stronger ensemble.", explanation: { "Model combination is an ensemble method, not \($0)." }),
+                    (text: "It models ordered dependencies in a sequence with memory.", explanation: { "Sequential memory is a sequence model concept, not \($0)." }),
+                    (text: "It generates entirely new samples from a latent distribution.", explanation: { "Latent sampling is a generative model task, not \($0)." }),
+                    (text: "It detects and labels named entities in sentences.", explanation: { "Entity tagging is an NLP task, not \($0)." }),
+                    (text: "It measures the harmonic mean of precision and recall.", explanation: { "The harmonic mean metric is F1, not \($0)." }),
+                    (text: "It finds the maximum-margin hyperplane between classes.", explanation: { "Margin optimization is an SVM concept, not \($0)." }),
                 ]
             case .evaluation:
                 return [
-                    "It modifies gradients before an optimizer updates parameters.",
-                    "It protects user privacy with dataset governance controls.",
-                    "It constructs embeddings that capture semantic similarity in text.",
+                    (text: "It modifies gradients before an optimizer updates parameters.", explanation: { "Gradient modification is an optimizer feature, not \($0)." }),
+                    (text: "It protects user privacy with dataset governance controls.", explanation: { "Privacy governance is an ethics concern, not \($0)." }),
+                    (text: "It constructs embeddings that capture semantic similarity in text.", explanation: { "Semantic embeddings are language representations, not \($0)." }),
+                    (text: "It randomly disables neurons during each training iteration.", explanation: { "Neuron disabling is dropout regularization, not \($0)." }),
+                    (text: "It grows dense clusters and marks outliers as noise.", explanation: { "Density-based clustering is DBSCAN, not \($0)." }),
+                    (text: "It locates objects in video frames and tracks their motion.", explanation: { "Object tracking is a vision task, not \($0)." }),
                 ]
             case .general:
                 return [
-                    "It is only a visualization trick and never affects modeling decisions.",
-                    "It is a replacement for data quality, optimization, and evaluation all at once.",
-                    "It matters only during deployment and never during model development.",
+                    (text: "It is only a visualization trick and never affects modeling decisions.", explanation: { "That underestimates the role of \($0) in the broader pipeline." }),
+                    (text: "It is a replacement for data quality, optimization, and evaluation all at once.", explanation: { "No single concept replaces all pipeline stages, including \($0)." }),
+                    (text: "It matters only during deployment and never during model development.", explanation: { "\($0) is relevant throughout the model lifecycle, not just at deployment." }),
+                    (text: "It is a type of activation function applied after every layer.", explanation: { "Activation functions are a separate neural network concept from \($0)." }),
+                    (text: "It requires labeled data and supervised training to work.", explanation: { "Not all methods require labeled data; that conflates \($0) with supervised learning." }),
                 ]
             }
         }
