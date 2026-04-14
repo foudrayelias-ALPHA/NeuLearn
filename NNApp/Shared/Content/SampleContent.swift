@@ -36,13 +36,13 @@ enum SampleContent {
         summary: "A first mental model for inputs, weights, and output.",
         level: .beginner,
         sections: [
-            LessonSection(title: "Intuition", body: "Think of a neuron as a tiny decision-maker. It receives several numbers as input, decides how important each one is, adds them up, and produces a single output number.\n\nImagine you're deciding whether to go outside. You consider the temperature, whether it's raining, and how much free time you have. Each factor matters a different amount to you \u{2014} that's exactly what a neuron does with its inputs."),
+            LessonSection(title: "Intuition", body: "Think of a neuron as a tiny decision-maker. It receives several numbers as input, decides how important each one is, adds them up, and produces a single output number.\n\nImagine you're deciding whether to go outside. You consider the temperature, whether it's raining, and how much free time you have. Each factor matters a different amount to you -- that's exactly what a neuron does with its inputs."),
             LessonSection(title: "How it works", body: "A neuron multiplies each input by a weight, sums the results, and passes the total through an activation function.\n\nFor example, with two inputs (0.5 and 0.8) and weights (0.4 and 0.6):\n\nWeighted sum = (0.5 \u{00D7} 0.4) + (0.8 \u{00D7} 0.6) = 0.20 + 0.48 = 0.68\n\nThe activation function then transforms 0.68 into the neuron's output, deciding how strongly this neuron \"fires.\"", interactive: .neuronExplorer),
-            LessonSection(title: "Why it matters", body: "A single neuron can only make simple decisions \u{2014} like drawing a straight line between two groups. But when you connect many neurons together in layers, the network can learn to recognize complex patterns.\n\nEvery deep learning model, from image classifiers to language models, is built from this same basic unit."),
+            LessonSection(title: "Why it matters", body: "A single neuron can only make simple decisions -- like drawing a straight line between two groups. But when you connect many neurons together in layers, the network can learn to recognize complex patterns.\n\nEvery deep learning model, from image classifiers to language models, is built from this same basic unit."),
         ],
         challenge: LessonChallenge(
-            prompt: "A neuron receives inputs [0.9, 0.2] with weights [0.6, 0.8] and bias 0.1. What is the weighted sum before any activation function is applied?",
-            type: .predictOutput(inputs: [0.9, 0.2], weights: [0.6, 0.8], bias: 0.1, activationName: "", correctAnswer: 0.8, tolerance: 0.05)
+            prompt: "A neuron receives inputs [0.5, 0.8] with weights [0.4, 0.6]. What is the weighted sum before any activation function is applied?",
+            type: .predictOutput(inputs: [0.5, 0.8], weights: [0.4, 0.6], bias: 0.0, activationName: "", correctAnswer: 0.68, tolerance: 0.05)
         )
     )
 
@@ -52,16 +52,16 @@ enum SampleContent {
         summary: "How a neuron decides how much each input matters.",
         level: .beginner,
         sections: [
-            LessonSection(title: "Weights", body: "Each connection between neurons has a weight \u{2014} a number that controls how much influence one neuron's output has on the next.\n\nA large positive weight means \"pay close attention to this input.\" A weight near zero means \"mostly ignore this.\" A negative weight means \"this input pushes the output in the opposite direction.\""),
+            LessonSection(title: "Weights", body: "Each connection between neurons has a weight -- a number that controls how much influence one neuron's output has on the next.\n\nA large positive weight means \"pay close attention to this input.\" A weight near zero means \"mostly ignore this.\" A negative weight means \"this input pushes the output in the opposite direction.\""),
             LessonSection(title: "Bias", body: "Bias is an extra number added to the weighted sum before the activation function. It shifts the neuron's threshold for firing.\n\nWithout bias, a neuron with all-zero inputs would always output the same thing. Bias lets the neuron have a baseline preference, making the model more flexible.", interactive: .neuronExplorer),
             LessonSection(title: "Learning", body: "During training, the network adjusts weights and biases to reduce prediction errors. This is the core of learning: finding the combination of weights and biases that makes the network's output match the desired result as closely as possible."),
         ],
         challenge: LessonChallenge(
             prompt: "What does a negative weight do to an input signal?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Amplifies the input, making it stronger", isCorrect: false, explanation: "A positive weight amplifies. A negative weight inverts the signal."),
-                ChallengeOption(text: "Flips the input's influence \u{2014} positive inputs push the output down", isCorrect: true, explanation: "Correct! A negative weight reverses the direction of the input's effect on the output."),
-                ChallengeOption(text: "Zeroes out the input completely", isCorrect: false, explanation: "A weight of exactly zero would ignore the input. Negative weights still pass information, just inverted."),
+                ChallengeOption(text: "Amplifies the input and makes the signal stronger overall", isCorrect: false, explanation: "A positive weight amplifies. A negative weight inverts the signal."),
+                ChallengeOption(text: "Reverses the input's direction", isCorrect: true, explanation: "Correct! A negative weight flips the effect: positive inputs push the output down, and vice versa."),
+                ChallengeOption(text: "Zeroes out the input so the neuron ignores it entirely", isCorrect: false, explanation: "A weight of exactly zero would ignore the input. Negative weights still pass information, just inverted."),
                 ChallengeOption(text: "Has no effect on the output", isCorrect: false, explanation: "Every non-zero weight affects the output. Negative weights invert the signal direction."),
             ])
         )
@@ -73,17 +73,17 @@ enum SampleContent {
         summary: "Why neurons need a non-linear step.",
         level: .beginner,
         sections: [
-            LessonSection(title: "The problem", body: "If neurons only multiplied and added, stacking layers wouldn't help \u{2014} the entire network would collapse into one simple linear function. No matter how many layers you add, you'd only ever be able to draw straight lines through your data."),
+            LessonSection(title: "The problem", body: "If neurons only multiplied and added, stacking layers wouldn't help -- the entire network would collapse into one simple linear function. No matter how many layers you add, you'd only ever be able to draw straight lines through your data."),
             LessonSection(title: "The solution", body: "Activation functions introduce non-linearity. After computing the weighted sum, the neuron passes it through a function that bends, squashes, or clips the output.\n\nCommon activation functions:\n\n\u{2022} Sigmoid: squashes values to between 0 and 1\n\u{2022} ReLU: outputs zero for negative values, passes positive values through unchanged\n\u{2022} Tanh: squashes values to between -1 and 1", interactive: .activationPlayground),
             LessonSection(title: "Why it matters", body: "Non-linearity is what gives neural networks their power. It allows them to learn curved boundaries, complex patterns, and subtle relationships in data that no linear model could capture."),
         ],
         challenge: LessonChallenge(
             prompt: "A network uses only linear functions (no activation). You stack 100 layers. What can it learn?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Complex curves and patterns — more layers means more power", isCorrect: false, explanation: "Without non-linearity, stacking layers is like multiplying matrices — it always collapses to a single linear transformation, no matter how deep."),
-                ChallengeOption(text: "Only straight-line relationships — it collapses to one linear function", isCorrect: true, explanation: "Correct! Without activation functions, any number of stacked linear layers is mathematically equivalent to a single linear layer. That's why non-linearity is essential."),
-                ChallengeOption(text: "Nothing — the network can't run without activation functions", isCorrect: false, explanation: "The network can still compute, it just can't learn anything beyond linear relationships. Activation functions unlock complexity, they don't enable computation."),
-                ChallengeOption(text: "It depends on the number of neurons per layer", isCorrect: false, explanation: "Width doesn't help either. More neurons in a linear layer still produce a linear output. Non-linearity is the missing ingredient."),
+                ChallengeOption(text: "Complex curves and patterns, since more layers means more power", isCorrect: false, explanation: "Without non-linearity, stacking layers is like multiplying matrices. It always collapses to a single linear transformation, no matter how deep."),
+                ChallengeOption(text: "Only straight-line relationships", isCorrect: true, explanation: "Correct! Without activation functions, any number of stacked linear layers is mathematically equivalent to a single linear layer. That's why non-linearity is essential."),
+                ChallengeOption(text: "Nothing at all, because the network can't even run without activation functions", isCorrect: false, explanation: "The network can still compute, it just can't learn anything beyond linear relationships. Activation functions unlock complexity, they don't enable computation."),
+                ChallengeOption(text: "It depends on how many neurons each layer has", isCorrect: false, explanation: "Width doesn't help either. More neurons in a linear layer still produce a linear output. Non-linearity is the missing ingredient."),
             ])
         )
     )
@@ -97,16 +97,16 @@ enum SampleContent {
         level: .intermediate,
         sections: [
             LessonSection(title: "The flow", body: "A forward pass is the process of feeding input data through the network, layer by layer, until it produces an output.\n\nAt each layer, every neuron computes its weighted sum of inputs, adds its bias, and applies its activation function. The results become the inputs for the next layer."),
-            LessonSection(title: "Step by step", body: "1. Input values enter the first layer\n2. Each neuron computes: output = activation(weights \u{00B7} inputs + bias)\n3. Those outputs become inputs to the next layer\n4. Repeat until the final layer produces the prediction\n\nThe entire process is deterministic \u{2014} the same inputs with the same weights always produce the same output.", interactive: .forwardPassStepper),
+            LessonSection(title: "Step by step", body: "1. Input values enter the first layer\n2. Each neuron computes: output = activation(weights \u{00B7} inputs + bias)\n3. Those outputs become inputs to the next layer\n4. Repeat until the final layer produces the prediction\n\nThe entire process is deterministic -- the same inputs with the same weights always produce the same output.", interactive: .forwardPassStepper),
             LessonSection(title: "In practice", body: "When you use the Visual Lab and adjust the input sliders, you're watching the forward pass happen in real time. Each node updates instantly because the computation flows strictly forward through the network."),
         ],
         challenge: LessonChallenge(
             prompt: "In a forward pass, which direction does data flow?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Output to input (backward)", isCorrect: false, explanation: "Backward flow is backpropagation, used during training to compute gradients."),
-                ChallengeOption(text: "Input to output (forward), one layer at a time", isCorrect: true, explanation: "Correct! The forward pass computes outputs layer by layer from input to output."),
-                ChallengeOption(text: "All layers simultaneously", isCorrect: false, explanation: "Each layer depends on the previous layer's output, so they must compute in sequence."),
-                ChallengeOption(text: "Randomly between layers", isCorrect: false, explanation: "The forward pass is strictly ordered: input layer first, output layer last."),
+                ChallengeOption(text: "Output to input, since the network needs to check its answer first", isCorrect: false, explanation: "Backward flow is backpropagation, used during training to compute gradients."),
+                ChallengeOption(text: "Input to output, one layer at a time", isCorrect: true, explanation: "Correct! The forward pass computes outputs layer by layer from input to output."),
+                ChallengeOption(text: "All layers compute simultaneously in parallel", isCorrect: false, explanation: "Each layer depends on the previous layer's output, so they must compute in sequence."),
+                ChallengeOption(text: "Randomly between layers depending on the architecture", isCorrect: false, explanation: "The forward pass is strictly ordered: input layer first, output layer last."),
             ])
         )
     )
@@ -139,7 +139,7 @@ enum SampleContent {
         level: .intermediate,
         sections: [
             LessonSection(title: "The idea", body: "Imagine you're standing on a hilly landscape in thick fog. You can't see the lowest point, but you can feel which direction slopes downward under your feet. Gradient descent works the same way: it measures the slope of the loss with respect to each weight, then takes a small step downhill.", interactive: .gradientStep),
-            LessonSection(title: "The gradient", body: "The gradient is a vector of partial derivatives \u{2014} it tells you, for each weight, how much the loss would change if you nudged that weight slightly.\n\nA large gradient means the loss is very sensitive to that weight. A gradient near zero means changing that weight wouldn't help much."),
+            LessonSection(title: "The gradient", body: "The gradient is a vector of partial derivatives -- it tells you, for each weight, how much the loss would change if you nudged that weight slightly.\n\nA large gradient means the loss is very sensitive to that weight. A gradient near zero means changing that weight wouldn't help much."),
             LessonSection(title: "The update", body: "Each training step:\n\n1. Compute the loss\n2. Compute the gradient of the loss with respect to every weight\n3. Update each weight: new_weight = old_weight - learning_rate \u{00D7} gradient\n\nThe learning rate controls how big each step is. Too large and you overshoot; too small and training takes forever."),
         ],
         challenge: LessonChallenge(
@@ -176,14 +176,14 @@ enum SampleContent {
         level: .advanced,
         sections: [
             LessonSection(title: "Underfitting", body: "A model underfits when it's too simple to capture the patterns in the data. It performs poorly on both training data and new data.\n\nCauses: too few neurons or layers, insufficient training time, or overly aggressive regularization."),
-            LessonSection(title: "Overfitting", body: "A model overfits when it memorizes the training data \u{2014} including its noise and quirks \u{2014} instead of learning the underlying pattern. It performs well on training data but poorly on new, unseen data.\n\nCauses: too many parameters relative to training data, training for too long, or no regularization."),
+            LessonSection(title: "Overfitting", body: "A model overfits when it memorizes the training data -- including its noise and quirks -- instead of learning the underlying pattern. It performs well on training data but poorly on new, unseen data.\n\nCauses: too many parameters relative to training data, training for too long, or no regularization."),
             LessonSection(title: "Finding the balance", body: "The goal is generalization: a model that captures real patterns without memorizing noise.\n\nTechniques to prevent overfitting:\n\u{2022} Regularization (L1, L2)\n\u{2022} Dropout: randomly disabling neurons during training\n\u{2022} Early stopping: halt training when validation performance stops improving\n\u{2022} More training data"),
         ],
         challenge: LessonChallenge(
             prompt: "A model scores 99% accuracy on training data but 52% on test data. What is this?",
             type: .multipleChoice(options: [
                 ChallengeOption(text: "Underfitting", isCorrect: false, explanation: "Underfitting would show poor performance on both training AND test data."),
-                ChallengeOption(text: "Overfitting", isCorrect: true, explanation: "Correct! The huge gap between training accuracy (99%) and test accuracy (52%) is the classic sign of overfitting \u{2014} the model memorized the training data."),
+                ChallengeOption(text: "Overfitting", isCorrect: true, explanation: "Correct! The huge gap between training accuracy (99%) and test accuracy (52%) is the classic sign of overfitting -- the model memorized the training data."),
                 ChallengeOption(text: "Good generalization", isCorrect: false, explanation: "Good generalization means similar performance on training and test data. A 47% gap is the opposite."),
                 ChallengeOption(text: "The model needs more training time", isCorrect: false, explanation: "More training would likely make overfitting worse, not better. The model already performs near-perfectly on training data."),
             ])
@@ -203,10 +203,10 @@ enum SampleContent {
         challenge: LessonChallenge(
             prompt: "What happens when the learning rate is too high?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "Training is very slow but stable", isCorrect: false, explanation: "That describes a learning rate that is too LOW, not too high."),
-                ChallengeOption(text: "The loss overshoots and may diverge, never finding a good solution", isCorrect: true, explanation: "Correct! A high learning rate causes the weights to jump too far on each step, overshooting the minimum and potentially making the loss increase instead of decrease."),
-                ChallengeOption(text: "The model underfits the data", isCorrect: false, explanation: "Underfitting is about model capacity, not learning rate. A high rate causes instability."),
-                ChallengeOption(text: "Nothing \u{2014} modern optimizers handle any learning rate", isCorrect: false, explanation: "Even adaptive optimizers have a base learning rate that can cause divergence if set too high."),
+                ChallengeOption(text: "Training is very slow but the model stays stable and converges", isCorrect: false, explanation: "That describes a learning rate that is too LOW, not too high."),
+                ChallengeOption(text: "The loss overshoots and may diverge", isCorrect: true, explanation: "Correct! A high learning rate causes the weights to jump too far on each step, overshooting the minimum and potentially making the loss increase instead of decrease."),
+                ChallengeOption(text: "The model underfits because it can't hold onto patterns", isCorrect: false, explanation: "Underfitting is about model capacity, not learning rate. A high rate causes instability."),
+                ChallengeOption(text: "Nothing, because modern optimizers handle any learning rate automatically", isCorrect: false, explanation: "Even adaptive optimizers have a base learning rate that can cause divergence if set too high."),
             ])
         )
     )
@@ -217,17 +217,17 @@ enum SampleContent {
         summary: "The simplest architecture: data flows one direction.",
         level: .advanced,
         sections: [
-            LessonSection(title: "Structure", body: "A feedforward network is the most basic neural network architecture. Data enters at the input layer, passes through one or more hidden layers, and exits at the output layer. There are no loops or cycles \u{2014} information only moves forward."),
+            LessonSection(title: "Structure", body: "A feedforward network is the most basic neural network architecture. Data enters at the input layer, passes through one or more hidden layers, and exits at the output layer. There are no loops or cycles -- information only moves forward."),
             LessonSection(title: "What they can do", body: "Despite their simplicity, feedforward networks are universal function approximators. Given enough neurons, they can theoretically learn any continuous function.\n\nIn practice, they work well for tabular data, simple classification, and regression tasks."),
             LessonSection(title: "Limitations", body: "Feedforward networks treat each input independently. They have no memory of previous inputs and no awareness of spatial structure. This is why specialized architectures like CNNs (for images) and transformers (for sequences) were developed."),
         ],
         challenge: LessonChallenge(
             prompt: "Why can't a feedforward network process a time series as well as a recurrent network?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "It can't handle numerical inputs", isCorrect: false, explanation: "Feedforward networks handle numerical inputs just fine. The issue is about temporal relationships."),
-                ChallengeOption(text: "Each input is processed independently with no memory of previous inputs", isCorrect: true, explanation: "Correct! Feedforward networks treat every input as isolated. They have no mechanism to remember or relate to previous time steps."),
-                ChallengeOption(text: "They can only do classification, not regression", isCorrect: false, explanation: "Feedforward networks can do both classification and regression."),
-                ChallengeOption(text: "They're too slow for sequential data", isCorrect: false, explanation: "Speed isn't the issue \u{2014} it's the lack of temporal awareness."),
+                ChallengeOption(text: "It can't handle numerical inputs, only categorical features", isCorrect: false, explanation: "Feedforward networks handle numerical inputs just fine. The issue is about temporal relationships."),
+                ChallengeOption(text: "It has no memory of previous inputs", isCorrect: true, explanation: "Correct! Feedforward networks treat every input as isolated. They have no mechanism to remember or relate to previous time steps."),
+                ChallengeOption(text: "They can only do classification, not regression on sequences", isCorrect: false, explanation: "Feedforward networks can do both classification and regression."),
+                ChallengeOption(text: "They're too slow to keep up with real-time sequential data", isCorrect: false, explanation: "Speed isn't the issue. It's the lack of temporal awareness."),
             ])
         )
     )
@@ -258,16 +258,16 @@ enum SampleContent {
         level: .advanced,
         sections: [
             LessonSection(title: "Beyond sequence order", body: "Before transformers, recurrent networks processed sequences one element at a time. Transformers process all elements simultaneously using a mechanism called attention.\n\nThis parallelism makes them much faster to train and allows them to capture long-range relationships in data."),
-            LessonSection(title: "Attention mechanism", body: "The core idea: for each element in the input, compute how relevant every other element is to it.\n\nSelf-attention uses three learned projections \u{2014} Query, Key, and Value \u{2014} to compute attention scores. High scores mean strong relevance. The output is a weighted combination of values, emphasizing the most relevant information."),
+            LessonSection(title: "Attention mechanism", body: "The core idea: for each element in the input, compute how relevant every other element is to it.\n\nSelf-attention uses three learned projections -- Query, Key, and Value -- to compute attention scores. High scores mean strong relevance. The output is a weighted combination of values, emphasizing the most relevant information."),
             LessonSection(title: "Impact", body: "Transformers power most modern AI systems:\n\n\u{2022} GPT, Claude: language understanding and generation\n\u{2022} Vision Transformers (ViT): image recognition\n\u{2022} DALL-E, Stable Diffusion: image generation\n\nTheir flexibility and scalability make them the dominant architecture in AI research today."),
         ],
         challenge: LessonChallenge(
             prompt: "What is the main advantage of attention over processing sequences one element at a time?",
             type: .multipleChoice(options: [
-                ChallengeOption(text: "It uses fewer parameters", isCorrect: false, explanation: "Transformers typically use MORE parameters. Their advantage is in how they process relationships."),
-                ChallengeOption(text: "It processes all elements in parallel and captures long-range relationships directly", isCorrect: true, explanation: "Correct! Attention lets every element directly interact with every other element, regardless of distance, and processes them simultaneously."),
-                ChallengeOption(text: "It doesn't need training data", isCorrect: false, explanation: "All neural network architectures need training data. Attention is about how the model processes its inputs."),
-                ChallengeOption(text: "It only works with text, making it specialized", isCorrect: false, explanation: "Transformers work with images, audio, protein sequences, and more \u{2014} not just text."),
+                ChallengeOption(text: "It uses fewer parameters so the model trains faster overall", isCorrect: false, explanation: "Transformers typically use MORE parameters. Their advantage is in how they process relationships."),
+                ChallengeOption(text: "It captures long-range relationships directly", isCorrect: true, explanation: "Correct! Attention lets every element directly interact with every other element, regardless of distance, and processes them simultaneously."),
+                ChallengeOption(text: "It doesn't need training data because attention is unsupervised", isCorrect: false, explanation: "All neural network architectures need training data. Attention is about how the model processes its inputs."),
+                ChallengeOption(text: "It only works with text, which makes it very specialized for language", isCorrect: false, explanation: "Transformers work with images, audio, protein sequences, and more, not just text."),
             ])
         )
     )

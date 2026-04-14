@@ -81,6 +81,14 @@ struct CreditsView: View {
                                 .foregroundStyle(AppTheme.accent)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Divider()
+                                .overlay(AppTheme.mutedInk.opacity(0.15))
+
+                            creditRow(
+                                label: "Organization",
+                                value: "Not associated with any organization besides FoudrAI"
+                            )
                         }
                         .padding(20)
                         .background(

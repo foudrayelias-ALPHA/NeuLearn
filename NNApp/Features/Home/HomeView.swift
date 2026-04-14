@@ -248,12 +248,23 @@ struct HomeView: View {
                         }
                     }
 
-                    Button {
-                        showCredits = true
-                    } label: {
-                        Text("App Information")
-                            .font(AppTheme.captionFont)
-                            .foregroundStyle(AppTheme.mutedInk.opacity(0.45))
+                    HStack(spacing: 14) {
+                        Button {
+                            showCredits = true
+                        } label: {
+                            Text("App Information")
+                                .font(AppTheme.captionFont)
+                                .foregroundStyle(AppTheme.mutedInk.opacity(0.45))
+                        }
+
+                        Button {
+                            showRecommendPrompt = true
+                        } label: {
+                            Image(systemName: "square.and.arrow.up.circle.fill")
+                                .font(.system(size: 20))
+                                .foregroundStyle(AppTheme.accent.opacity(0.85))
+                        }
+                        .accessibilityLabel("Recommend app")
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 24)
@@ -271,18 +282,6 @@ struct HomeView: View {
             .background(AppBackground())
             .toolbarBackground(AppTheme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showRecommendPrompt = true
-                    } label: {
-                        Image(systemName: "square.and.arrow.up.circle.fill")
-                            .font(.system(size: 20))
-                            .foregroundStyle(AppTheme.accent)
-                    }
-                    .accessibilityLabel("Recommend app")
-                }
-            }
             .alert("Recommend NueLearnND", isPresented: $showRecommendPrompt) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -367,17 +366,27 @@ struct HomeView: View {
                 }
             }
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(hasStartedLearning ? "Continue with" : "Start with")
-                    .font(AppTheme.captionFont)
-                    .foregroundStyle(AppTheme.mutedInk)
-                Text(nextLesson.title)
-                    .font(AppTheme.bodyFont.weight(.bold))
-                    .foregroundStyle(AppTheme.ink)
-                Text(nextLesson.summary)
-                    .font(AppTheme.captionFont)
-                    .foregroundStyle(AppTheme.mutedInk)
-                    .lineLimit(2)
+            HStack {
+                Spacer()
+                HStack(spacing: 10) {
+                    Text(hasStartedLearning ? "Continue: \(nextLesson.title)" : "Start: \(nextLesson.title)")
+                        .font(.system(size: 17, weight: .bold, design: .rounded))
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 15, weight: .bold))
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 28)
+                .padding(.vertical, 18)
+                .background(
+                    LinearGradient(
+                        colors: [AppTheme.accent, AppTheme.accent.opacity(0.8)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    in: Capsule()
+                )
+                .shadow(color: AppTheme.accent.opacity(0.4), radius: 12, y: 6)
+                Spacer()
             }
         }
         .padding(22)

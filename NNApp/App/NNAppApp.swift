@@ -43,7 +43,7 @@ struct NuelearnNDApp: App {
             hasSeenLaunchExperience = true
         }
 
-        let delay = isFirstLaunchExperience ? 2.5 : 0.8
+        let delay = isFirstLaunchExperience ? 5.0 : 1.6
 
         do {
             try await Task.sleep(for: .seconds(delay))

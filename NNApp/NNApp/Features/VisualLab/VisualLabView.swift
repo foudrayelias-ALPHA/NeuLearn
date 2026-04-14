@@ -415,7 +415,7 @@ struct VisualLabView: View {
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundStyle(LabColors.brightText)
 
-                    Text("A live sandbox for watching a neural network (3 inputs \u{2192} 3 hidden \u{2192} 3 hidden \u{2192} 1 output) make a prediction, measure its mistake, and update all 21 weights.")
+                    Text("A live sandbox for watching a neural network (3 inputs → 3 hidden → 3 hidden → 1 output) make a prediction, measure its mistake, and update all 21 weights.")
                         .font(.system(size: 15, weight: .regular, design: .rounded))
                         .foregroundStyle(LabColors.bodyText)
                         .fixedSize(horizontal: false, vertical: true)
@@ -639,7 +639,7 @@ struct VisualLabView: View {
 
             // Layer-by-layer weight summary
             weightLayerSummary(
-                title: "Input \u{2192} Hidden 1",
+                title: "Input → Hidden 1",
                 weights: activePhase == .update ? inspectedStep.weightsInputToHidden1After : inspectedStep.weightsInputToHidden1Before,
                 deltas: inspectedStep.inputToHidden1Deltas,
                 tint: LabColors.hidden1,
@@ -647,7 +647,7 @@ struct VisualLabView: View {
             )
 
             weightLayerSummary(
-                title: "Hidden 1 \u{2192} Hidden 2",
+                title: "Hidden 1 → Hidden 2",
                 weights: activePhase == .update ? inspectedStep.weightsHidden1ToHidden2After : inspectedStep.weightsHidden1ToHidden2Before,
                 deltas: inspectedStep.hidden1ToHidden2Deltas,
                 tint: LabColors.hidden2,
@@ -655,7 +655,7 @@ struct VisualLabView: View {
             )
 
             weightLayerSummary(
-                title: "Hidden 2 \u{2192} Output",
+                title: "Hidden 2 → Output",
                 weights: activePhase == .update ? inspectedStep.weightsHidden2ToOutputAfter : inspectedStep.weightsHidden2ToOutputBefore,
                 deltas: inspectedStep.hidden2ToOutputDeltas,
                 tint: LabColors.output,
@@ -666,6 +666,7 @@ struct VisualLabView: View {
 
     private func weightLayerSummary(title: String, weights: [Double], deltas: [Double], tint: Color, count: Int) -> some View {
         let showChange = activePhase == .update || activePhase == .backprop
+        let avgWeight = weights.reduce(0, +) / Double(count)
         let avgDelta = deltas.reduce(0, +) / Double(count)
 
         return VStack(alignment: .leading, spacing: 8) {
@@ -703,7 +704,7 @@ struct VisualLabView: View {
                 HStack(spacing: 4) {
                     Image(systemName: avgDelta >= 0 ? "arrow.up.right" : "arrow.down.right")
                         .font(.system(size: 9, weight: .bold))
-                    Text("avg \u{0394} \(signedFmt(avgDelta))")
+                    Text("avg Δ \(signedFmt(avgDelta))")
                         .font(.system(size: 10, weight: .semibold, design: .monospaced))
                 }
                 .foregroundStyle(avgDelta >= 0 ? LabColors.growth : LabColors.blame)

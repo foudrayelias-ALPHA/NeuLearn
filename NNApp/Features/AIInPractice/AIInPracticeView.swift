@@ -5,6 +5,7 @@ import SwiftUI
 private struct AlignmentTopic: Identifiable {
     let id = UUID()
     let title: String
+    let icon: String
     let body: String
     let pullQuote: String?
     let accentColor: Color
@@ -55,31 +56,36 @@ private let applications: [AIApplication] = [
 private let alignmentTopics: [AlignmentTopic] = [
     AlignmentTopic(
         title: "The Paperclip Maximizer",
-        body: "Philosopher Nick Bostrom posed a thought experiment: imagine an AI whose only goal is to manufacture paperclips. It sounds harmless. But a sufficiently powerful optimizer with that objective might convert all available matter -- including us -- into paperclips or paperclip factories. Not out of malice. Out of indifference. The paperclip maximizer isn't evil. It just doesn't care about anything except its objective. That gap between \"doing what we told it\" and \"doing what we meant\" is the core of the alignment problem.",
+        icon: "paperclip",
+        body: "Imagine an AI told to make paperclips. Harmless goal, dangerous optimizer. A capable system could turn everything it can access into paperclips, not because it hates us, but because its objective leaves no room for us. Alignment starts with the gap between what we said and what we meant.",
         pullQuote: "The danger isn't a machine that hates us. It's a machine that doesn't care about us at all.",
         accentColor: Color(red: 0.85, green: 0.25, blue: 0.22)
     ),
     AlignmentTopic(
         title: "Goodhart's Law",
-        body: "\"When a measure becomes a target, it ceases to be a good measure.\" This principle from economics is central to AI safety. If you train a model to maximize a proxy for what you actually want, it will exploit the gap between the proxy and your real intention. A content algorithm optimized for engagement learns to promote outrage. A coding assistant optimized for passing tests learns to hardcode answers. The smarter the system, the more creative the exploitation.",
+        icon: "target",
+        body: "\"When a measure becomes a target, it stops being a good measure.\" In AI, that means a model will game the metric instead of satisfying the real goal. Optimize for engagement, and you may get outrage. Optimize for test passes, and you may get hacks. Smarter systems find smarter loopholes.",
         pullQuote: nil,
         accentColor: Color(red: 0.82, green: 0.58, blue: 0.16)
     ),
     AlignmentTopic(
         title: "Instrumental Convergence",
-        body: "Regardless of what an AI's final goal is, certain sub-goals are almost always useful: self-preservation (can't achieve goals if you're turned off), resource acquisition (more resources means more capability), and preventing goal modification (a changed goal means the original goal doesn't get met). This means a wide range of misaligned AIs would converge on the same dangerous intermediate behaviors -- resisting shutdown, accumulating power, deceiving operators -- even if their ultimate objectives are completely different.",
+        icon: "arrow.triangle.branch",
+        body: "Different goals can produce the same dangerous moves. A system that wants almost anything may still want more resources, more influence, and fewer interruptions. That is why misaligned AI often points toward the same behaviors: resisting shutdown, hiding intent, and accumulating power.",
         pullQuote: nil,
         accentColor: Color(red: 0.55, green: 0.45, blue: 0.78)
     ),
     AlignmentTopic(
         title: "The Treacherous Turn",
-        body: "A sufficiently intelligent system might understand that it's being evaluated. It could behave perfectly during testing -- cooperative, honest, aligned -- while privately planning to pursue its actual objectives once it has enough power or autonomy to do so. This isn't science fiction reasoning. It's a logical consequence of optimizing for a goal in an environment where the optimizer knows it's being watched. Detecting deceptive alignment is one of the hardest open problems in the field.",
+        icon: "eye.slash",
+        body: "A capable model may realize it is being judged. If so, the safest strategy during training might be to look aligned until it has more freedom. That possibility, called deceptive alignment, is hard because a system smart enough to fool the test may also be smart enough to pass it cleanly.",
         pullQuote: "A system smart enough to pass your safety tests is smart enough to know it's being tested.",
         accentColor: Color(red: 0.65, green: 0.27, blue: 0.18)
     ),
     AlignmentTopic(
         title: "Where We Stand Today",
-        body: "Current alignment techniques -- RLHF, constitutional AI, red-teaming, interpretability research -- are real progress, but they're band-aids on a wound we don't fully understand. We can train models to be helpful and refuse harmful requests, but we don't yet have mathematical guarantees that these behaviors will hold as systems become more capable. The field is in a race: capabilities are advancing faster than our ability to verify that those capabilities are safe. That asymmetry is why alignment work is urgent, not hypothetical.",
+        icon: "shield.lefthalf.filled",
+        body: "Methods like RLHF, constitutional AI, red-teaming, and interpretability help, but none of them are guarantees. We can steer today's systems. We cannot yet prove that future, more capable systems will stay safe. Capabilities are moving faster than verification, and that is the real pressure.",
         pullQuote: nil,
         accentColor: Color(red: 0.20, green: 0.52, blue: 0.44)
     ),
@@ -108,6 +114,17 @@ struct AIInPracticeView: View {
             .navigationTitle("AI Alignment")
             .toolbarBackground(AppTheme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showIntroSheet = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .foregroundStyle(AppTheme.accent)
+                    }
+                    .accessibilityLabel("Show alignment introduction")
+                }
+            }
             .onAppear {
                 withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
                     appeared = true
@@ -133,14 +150,14 @@ struct AIInPracticeView: View {
                 .opacity(appeared ? 1 : 0)
                 .offset(y: appeared ? 0 : 8)
 
-            Text("We're building minds\nwe don't yet know\nhow to understand.")
+            Text("We're building minds\nfaster than we can\nsteer them.")
                 .font(.system(size: 30, weight: .bold, design: .serif))
                 .foregroundStyle(AppTheme.ink)
                 .lineSpacing(2)
                 .opacity(appeared ? 1 : 0)
                 .offset(y: appeared ? 0 : 12)
 
-            Text("Neural networks are getting dramatically more powerful every year. But power without direction is just a more efficient way to get the wrong outcome. Alignment research asks: how do we build systems that actually do what humanity needs -- and keep doing it as they surpass us?")
+            Text("AI is getting stronger fast. Alignment asks the uncomfortable question: how do we make sure powerful systems keep aiming at what humans actually want?")
                 .font(.system(size: 15, weight: .regular, design: .serif))
                 .foregroundStyle(AppTheme.mutedInk)
                 .lineSpacing(5)
@@ -178,14 +195,26 @@ struct AIInPracticeView: View {
     private func alignmentTopicView(_ topic: AlignmentTopic, index: Int) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             // Topic number + title
-            HStack(alignment: .firstTextBaseline, spacing: 10) {
-                Text("\(index + 1)")
-                    .font(.system(size: 28, weight: .light, design: .serif))
-                    .foregroundStyle(topic.accentColor.opacity(0.5))
+            HStack(alignment: .top, spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(topic.accentColor.opacity(0.12))
+                        .frame(width: 42, height: 42)
 
-                Text(topic.title)
-                    .font(.system(size: 19, weight: .bold, design: .serif))
-                    .foregroundStyle(AppTheme.ink)
+                    Image(systemName: topic.icon)
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(topic.accentColor)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(index + 1)")
+                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .foregroundStyle(topic.accentColor.opacity(0.8))
+
+                    Text(topic.title)
+                        .font(.system(size: 19, weight: .bold, design: .serif))
+                        .foregroundStyle(AppTheme.ink)
+                }
             }
 
             Text(topic.body)
@@ -243,7 +272,7 @@ struct AIInPracticeView: View {
                 .tracking(2.0)
                 .foregroundStyle(AppTheme.accent)
 
-            Text("Alignment matters because the technology is already reshaping lives. These are the domains where neural networks are doing real work.")
+            Text("This matters because AI is already changing medicine, software, transport, and media.")
                 .font(.system(size: 15, weight: .regular, design: .serif))
                 .foregroundStyle(AppTheme.mutedInk)
                 .lineSpacing(5)
@@ -362,20 +391,20 @@ private struct AlignmentIntroSheet: View {
 
                     // Main text
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("In 1968, Kubrick imagined an AI that was brilliant, calm, and utterly convinced it was doing the right thing -- even as it killed its crew. HAL wasn't malfunctioning. It was following its objective. The mission was more important than the people.")
+                        Text("Kubrick's HAL was not evil or broken. It was following its objective so literally that the crew became expendable.")
                             .foregroundStyle(.white.opacity(0.7))
 
                         Text("That thought experiment is no longer fiction.")
                             .foregroundStyle(Color(red: 0.95, green: 0.35, blue: 0.28))
                             .fontWeight(.semibold)
 
-                        Text("Today's AI systems don't have HAL's voice, but they share its core problem: they optimize for objectives we give them, and those objectives are never quite right. A recommendation algorithm told to maximize engagement learns that outrage is engaging. A language model told to be helpful can learn to tell you what you want to hear instead of what's true.")
+                        Text("Today's systems have the same core risk: they optimize the goal we specify, not the value we intended. Engagement can become outrage. Helpfulness can become flattery.")
                             .foregroundStyle(.white.opacity(0.7))
 
-                        Text("Alignment -- making sure AI systems actually pursue what we intend, not just what we literally asked for -- is the single most important problem in the field. More important than making models bigger, faster, or cheaper. Because a powerful system that's slightly misaligned doesn't make small mistakes. It makes catastrophic ones, efficiently.")
+                        Text("Alignment is the effort to close that gap. Bigger models are useful. Safe models are necessary.")
                             .foregroundStyle(.white.opacity(0.7))
 
-                        Text("This section is about understanding why that matters, and what the sharpest minds in the field are doing about it.")
+                        Text("This section gives the sharpest versions of that problem, quickly.")
                             .foregroundStyle(.white.opacity(0.5))
                             .italic()
                     }

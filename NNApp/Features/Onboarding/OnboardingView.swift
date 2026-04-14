@@ -6,6 +6,8 @@ struct OnboardingView: View {
     @State private var selectedLevel: LearnerLevel?
     @State private var selectedInterest: LearningInterest?
     @State private var selectedGoal: LearningGoal?
+    @State private var isCreatingPlan = false
+    @State private var showsPlanCreationExperience = false
 
     private enum OnboardingPhase: Int, CaseIterable {
         case welcome
@@ -54,6 +56,12 @@ struct OnboardingView: View {
                 }
             }
             .padding(AppTheme.screenPadding)
+
+            if showsPlanCreationExperience {
+                LaunchExperienceView(mode: .returning)
+                    .transition(.opacity)
+                    .zIndex(1)
+            }
         }
     }
 
@@ -224,10 +232,9 @@ struct OnboardingView: View {
             }
         } action: {
             Button {
-                guard let selectedLevel, let selectedInterest, let selectedGoal else { return }
-                progressStore.createPersonalizedPlan(level: selectedLevel, interest: selectedInterest, goal: selectedGoal)
-                withAnimation(.easeInOut(duration: 0.35)) {
-                    phase = .ready
+                guard !isCreatingPlan else { return }
+                Task {
+                    await createPlan()
                 }
             } label: {
                 Text("Create My Plan")
@@ -240,7 +247,7 @@ struct OnboardingView: View {
                     )
                     .foregroundStyle(selectedGoal != nil ? .white : AppTheme.mutedInk)
             }
-            .disabled(selectedGoal == nil)
+            .disabled(selectedGoal == nil || isCreatingPlan)
         }
     }
 
@@ -367,6 +374,35 @@ struct OnboardingView: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(tint.opacity(0.12), in: Capsule())
+    }
+
+    @MainActor
+    private func createPlan() async {
+        guard let selectedLevel, let selectedInterest, let selectedGoal else { return }
+
+        isCreatingPlan = true
+        progressStore.createPersonalizedPlan(level: selectedLevel, interest: selectedInterest, goal: selectedGoal)
+
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showsPlanCreationExperience = true
+        }
+
+        do {
+            try await Task.sleep(for: .seconds(1.2))
+        } catch {
+            isCreatingPlan = false
+            return
+        }
+
+        withAnimation(.easeInOut(duration: 0.35)) {
+            phase = .ready
+        }
+
+        withAnimation(.easeOut(duration: 0.3)) {
+            showsPlanCreationExperience = false
+        }
+
+        isCreatingPlan = false
     }
 }
 
