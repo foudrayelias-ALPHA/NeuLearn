@@ -3,7 +3,6 @@ import SwiftUI
 struct HomeView: View {
     @Environment(ProgressStore.self) private var progressStore
     @State private var showCredits = false
-    @State private var showRecommendPrompt = false
     @State private var currentFunFactIndex = Int.random(in: 0..<funFacts.count)
     let homeSelectionCount: Int
 
@@ -59,6 +58,10 @@ struct HomeView: View {
 
     private var nextPlanLesson: Lesson? {
         planLessons.first { !progressStore.isCompleted($0.id) } ?? planLessons.first
+    }
+
+    private var shareMessage: String {
+        "Check out NeuLearnND. It is a simple way to learn how neural networks work through short lessons and interactive examples."
     }
 
     private var currentFunFact: FunFact {
@@ -257,14 +260,17 @@ struct HomeView: View {
                                 .foregroundStyle(AppTheme.mutedInk.opacity(0.45))
                         }
 
-                        Button {
-                            showRecommendPrompt = true
-                        } label: {
+                        ShareLink(
+                            item: shareMessage,
+                            subject: Text("Check out NeuLearnND")
+                        ) {
                             Image(systemName: "square.and.arrow.up.circle.fill")
                                 .font(.system(size: 20))
                                 .foregroundStyle(AppTheme.accent.opacity(0.85))
                         }
+                        .buttonStyle(.plain)
                         .accessibilityLabel("Recommend app")
+                        .accessibilityHint("Shares NeuLearnND with a friend")
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 24)
@@ -274,7 +280,7 @@ struct HomeView: View {
             .sheet(isPresented: $showCredits) {
                 CreditsView()
             }
-            .navigationTitle("NueLearnND")
+            .navigationTitle("NeuLearnND")
             .navigationDestination(for: Lesson.self) { lesson in
                 LessonDetailView(lesson: lesson)
             }
@@ -282,11 +288,6 @@ struct HomeView: View {
             .background(AppBackground())
             .toolbarBackground(AppTheme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .alert("Recommend NueLearnND", isPresented: $showRecommendPrompt) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text("Like the app? Recommend it to a friend.")
-            }
         }
         .onChange(of: homeSelectionCount) { _, _ in
             withAnimation(.easeInOut(duration: 0.25)) {

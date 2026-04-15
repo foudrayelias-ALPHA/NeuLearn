@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct NuelearnNDApp: App {
+struct NeuLearnNDApp: App {
     @State private var progressStore = ProgressStore()
     @AppStorage("hasSeenLaunchExperience") private var hasSeenLaunchExperience = false
     @State private var showsLaunchExperience = true

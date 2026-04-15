@@ -16,6 +16,7 @@
 		600F003C2F8AAF5900EB1DA0 /* TopicTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600F003B2F8AAF5900EB1DA0 /* TopicTreeView.swift */; };
 		605C66052F8EAB2A00481745 /* ApplicationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C66042F8EAB2900481745 /* ApplicationsView.swift */; };
 		60A9BB842F8B1C2C00FA6E80 /* AIInPracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9BB832F8B1C2C00FA6E80 /* AIInPracticeView.swift */; };
+		60D8ED662F8F27D400334603 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60D8ED642F8F27D400334603 /* InfoPlist.strings */; };
 		60FF4CE42F89D23C0099AEA9 /* PathDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF4CE32F89D23C0099AEA9 /* PathDetailView.swift */; };
 		60FF4CE82F89D2670099AEA9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF4CE72F89D2670099AEA9 /* OnboardingView.swift */; };
 		60FF4CEA2F89D2670099AEA9 /* LessonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FF4CE92F89D2670099AEA9 /* LessonDetailView.swift */; };
@@ -43,6 +44,7 @@
 		600F003B2F8AAF5900EB1DA0 /* TopicTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicTreeView.swift; sourceTree = "<group>"; };
 		605C66042F8EAB2900481745 /* ApplicationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationsView.swift; sourceTree = "<group>"; };
 		60A9BB832F8B1C2C00FA6E80 /* AIInPracticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInPracticeView.swift; sourceTree = "<group>"; };
+		60D8ED652F8F27D400334603 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		60FF4CE32F89D23C0099AEA9 /* PathDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDetailView.swift; sourceTree = "<group>"; };
 		60FF4CE72F89D2670099AEA9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		60FF4CE92F89D2670099AEA9 /* LessonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonDetailView.swift; sourceTree = "<group>"; };
@@ -154,6 +156,14 @@
 			path = AIInPractice;
 			sourceTree = "<group>";
 		};
+		60D8ED632F8F27D200334603 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				60D8ED642F8F27D400334603 /* InfoPlist.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
 		60FF4CE52F89D2410099AEA9 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +190,7 @@
 				997D6963559D3B09BEAB3E1C /* Shared */,
 				3094D9790DABC709CC1FCDEB /* Simulation */,
 				60FF4CED2F89DEEC0099AEA9 /* Assets.xcassets */,
+				60D8ED632F8F27D200334603 /* en.lproj */,
 			);
 			path = NNApp;
 			sourceTree = "<group>";
@@ -292,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60FF4CEF2F8A05130099AEA9 /* Assets.xcassets in Resources */,
+				60D8ED662F8F27D400334603 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +342,17 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		60D8ED642F8F27D400334603 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60D8ED652F8F27D400334603 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		39051671183EF5DB5EDBC708 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -339,7 +362,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BT2NKG4W32;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = NueLearnND;
+				INFOPLIST_KEY_CFBundleDisplayName = NeuLearnND;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -365,7 +388,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BT2NKG4W32;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = NueLearnND;
+				INFOPLIST_KEY_CFBundleDisplayName = NeuLearnND;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
